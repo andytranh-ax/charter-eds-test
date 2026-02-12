@@ -122,7 +122,7 @@ export default function decorate(block) {
         }
 
         // Paragraph with bullet characters (•, ●, *) = features list
-        if (el.tagName === 'P' && (text.includes('•') || text.includes('●'))) {
+        if (el.tagName === 'P' && (text.includes('•') || text.includes('●') || text.startsWith('*'))) {
           // Check if we already have a features list, if not create one
           let features = card.querySelector('.pricing-card-features');
           if (!features) {
@@ -131,7 +131,7 @@ export default function decorate(block) {
             card.appendChild(features);
           }
           // Handle multiple bullets in one paragraph (split by bullet char)
-          const bulletLines = text.split(/[•●]/).filter((line) => line.trim());
+          const bulletLines = text.split(/[•●*]/).filter((line) => line.trim());
           bulletLines.forEach((bulletText) => {
             const li = document.createElement('li');
             li.textContent = bulletText.trim();
