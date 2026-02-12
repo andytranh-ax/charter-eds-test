@@ -1,37 +1,19 @@
 /*
  * HERO BLOCK
  * ==========
- * FILE: blocks/hero/hero.js
- *
- * HOW TO ADD THIS TO YOUR REPO:
- * 1. In your GitHub repo, go to the "blocks" folder
- * 2. Click "Add file" > "Create new file"
- * 3. Type "hero/hero.js" as the filename (this creates the folder AND file)
- * 4. Paste this entire file content
- * 5. Commit the change
- *
- * WHAT THIS BLOCK EXPECTS IN GOOGLE DOCS:
- * Create a table with 1 column. First row says "hero".
- * Remaining rows contain your content:
- *   Row 1: An image (paste or insert an image)
- *   Row 2: Eyebrow text in ALL CAPS (like "SPECTRUM BUSINESS INTERNET®")
- *   Row 3: Main headline (make it bold or Heading 1)
- *   Row 4: Bullet list of features
- *   Row 5: Small disclaimer text
- *   Row 6: Links that become buttons (use Google Docs link format)
+ * Expects a 1-column table where each row is separate content.
  */
 export default function decorate(block) {
-  // Get all the rows (children) of the block
   const rows = [...block.children];
 
-  // Find the image, headings, lists, paragraphs, and links
-  const image = block.querySelector('img');
-  const headings = block.querySelectorAll('h1, h2, h3');
-  const lists = block.querySelectorAll('ul');
-  const paragraphs = block.querySelectorAll('p');
-  const links = block.querySelectorAll('a');
+  // Find image first
+  let image = null;
+  rows.forEach((row) => {
+    const img = row.querySelector('img');
+    if (img) image = img;
+  });
 
-  // Build the hero structure
+  // Build structure
   block.innerHTML = '';
 
   // Background image container
@@ -39,7 +21,7 @@ export default function decorate(block) {
     const bgDiv = document.createElement('div');
     bgDiv.className = 'hero-bg';
     image.loading = 'eager';
-    bgDiv.appendChild(image);
+    bgDiv.appendChild(image.cloneNode(true));
     block.appendChild(bgDiv);
   }
 
@@ -50,81 +32,115 @@ export default function decorate(block) {
   const inner = document.createElement('div');
   inner.className = 'hero-inner';
 
-  // Add all non-image content to the inner container
+  // Collect bullet items
+  const bulletItems = [];
+
   rows.forEach((row) => {
-    const cells = [...row.children];
-    cells.forEach((cell) => {
-      // Skip cells that only contain the image
-      if (cell.querySelector('img') && cell.children.length === 1) return;
-      if (cell.querySelector('img') && cell.textContent.trim() === '') return;
+    const cell = row.querySelector('div');
+    if (!cell) return;
 
-      // Process the content
-      const cloned = cell.cloneNode(true);
+    // Skip cells that only contain image
+    if (cell.querySelector('img') && cell.textContent.trim() === '') return;
 
-      // Remove any images from text cells
-      cloned.querySelectorAll('picture').forEach((pic) => pic.remove());
-      cloned.querySelectorAll('img').forEach((img) => img.remove());
+    const elements = [...cell.children];
+    elements.forEach((el) => {
+      // Skip images
+      if (el.tagName === 'PICTURE' || el.querySelector('picture') || el.querySelector('img')) return;
 
-      // If there's content left, add it
-      if (cloned.textContent.trim() || cloned.querySelector('a')) {
-        // Style headings
-        cloned.querySelectorAll('h1, h2, h3').forEach((h) => {
-          h.className = 'hero-heading';
-        });
+      const text = el.textContent.trim();
+      if (!text && !el.querySelector('a')) return;
 
-        // Check for all-caps text (eyebrow)
-        cloned.querySelectorAll('p').forEach((p) => {
-          const text = p.textContent.trim();
-          if (text === text.toUpperCase() && text.length > 3 && !p.querySelector('a')) {
-            p.className = 'hero-eyebrow';
-          }
-        });
+      // ALL CAPS = eyebrow
+      if (text === text.toUpperCase() && text.length > 3 && !el.querySelector('a') && !text.startsWith('•')) {
+        const eyebrow = document.createElement('p');
+        eyebrow.className = 'hero-eyebrow';
+        eyebrow.textContent = text;
+        inner.appendChild(eyebrow);
+        return;
+      }
 
-        // Style bullet lists
-        cloned.querySelectorAll('ul').forEach((ul) => {
-          ul.className = 'hero-features';
-        });
+      // Headings or bold text = main headline
+      if (el.tagName.match(/^H[1-6]$/) || el.querySelector('strong')) {
+        const h1 = document.createElement('h1');
+        h1.className = 'hero-heading';
+        h1.textContent = text;
+        inner.appendChild(h1);
+        return;
+      }
 
-        // Convert bullet character paragraphs (•) to proper ul list
-        const bulletParas = [...cloned.querySelectorAll('p')].filter((p) => {
-          const text = p.textContent.trim();
-          return text.startsWith('•') || text.startsWith('●') || text.startsWith('*');
-        });
-        if (bulletParas.length > 0) {
+      // Bullet points (collect them)
+      if (text.startsWith('•') || text.startsWith('●') || text.startsWith('*')) {
+        bulletItems.push(text.replace(/^[•●*]\s*/, ''));
+        return;
+      }
+
+      // Links = buttons
+      if (el.querySelector('a')) {
+        // First flush any collected bullets
+        if (bulletItems.length > 0) {
           const ul = document.createElement('ul');
           ul.className = 'hero-features';
-          bulletParas.forEach((p) => {
+          bulletItems.forEach((item) => {
             const li = document.createElement('li');
-            li.textContent = p.textContent.replace(/^[•●*]\s*/, '');
+            li.textContent = item;
             ul.appendChild(li);
-            p.remove();
           });
-          // Insert the ul where the first bullet was
           inner.appendChild(ul);
+          bulletItems.length = 0;
         }
 
-        // Style links as buttons
-        cloned.querySelectorAll('a').forEach((a, index) => {
-          a.className = index === 0 ? 'button primary' : 'button secondary hero-btn-outline';
+        const ctaDiv = inner.querySelector('.hero-ctas') || document.createElement('div');
+        if (!ctaDiv.className) ctaDiv.className = 'hero-ctas';
+
+        const links = el.querySelectorAll('a');
+        links.forEach((link, idx) => {
+          const btn = document.createElement('a');
+          btn.href = link.href;
+          btn.className = ctaDiv.children.length === 0 ? 'button primary' : 'button secondary';
+          btn.textContent = link.textContent;
+          ctaDiv.appendChild(btn);
         });
 
-        // Wrap buttons in a CTA container
-        const buttonLinks = cloned.querySelectorAll('a.button');
-        if (buttonLinks.length > 0) {
-          const ctaDiv = document.createElement('div');
-          ctaDiv.className = 'hero-ctas';
-          buttonLinks.forEach((btn) => ctaDiv.appendChild(btn));
-          // Remove empty parent paragraphs
-          cloned.querySelectorAll('p').forEach((p) => {
-            if (!p.textContent.trim() && !p.querySelector('a')) p.remove();
+        if (!inner.querySelector('.hero-ctas')) {
+          inner.appendChild(ctaDiv);
+        }
+        return;
+      }
+
+      // Regular paragraph (disclaimer text etc)
+      if (text) {
+        // First flush any collected bullets
+        if (bulletItems.length > 0) {
+          const ul = document.createElement('ul');
+          ul.className = 'hero-features';
+          bulletItems.forEach((item) => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            ul.appendChild(li);
           });
-          cloned.appendChild(ctaDiv);
+          inner.appendChild(ul);
+          bulletItems.length = 0;
         }
 
-        inner.append(...cloned.childNodes);
+        const p = document.createElement('p');
+        p.className = 'hero-text';
+        p.textContent = text;
+        inner.appendChild(p);
       }
     });
   });
+
+  // Flush remaining bullets
+  if (bulletItems.length > 0) {
+    const ul = document.createElement('ul');
+    ul.className = 'hero-features';
+    bulletItems.forEach((item) => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      ul.appendChild(li);
+    });
+    inner.appendChild(ul);
+  }
 
   content.appendChild(inner);
   block.appendChild(content);

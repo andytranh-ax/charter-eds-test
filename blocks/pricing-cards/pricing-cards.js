@@ -1,48 +1,55 @@
 /*
  * PRICING CARDS BLOCK
  * ===================
- * FILE: blocks/pricing-cards/pricing-cards.js
- *
- * HOW TO ADD THIS TO YOUR REPO:
- * 1. In your GitHub repo, go to the "blocks" folder
- * 2. Click "Add file" > "Create new file"
- * 3. Type "pricing-cards/pricing-cards.js" as the filename
- * 4. Paste this entire file content
- * 5. Commit the change
- *
- * WHAT THIS BLOCK EXPECTS IN GOOGLE DOCS:
- * Create a table with 3 columns. First row says "pricing-cards".
- * Each column is one pricing card.
- * Inside each column, put the content in this order:
- *   - Eyebrow text in ALL CAPS (like "SPECTRUM BUSINESS INTERNET PREMIER")
- *   - Speed headline (like "Up to 500 Mbps") — make it bold or a heading
- *   - Price line (like "$65/mo")
- *   - Bundle text (like "Bundle and save up to $25/mo")
- *   - Bullet list of features
- *   - A link that becomes the "Order now" button
+ * Expects a table where each COLUMN is a card.
+ * Row content is collected per column to build each card.
  */
 export default function decorate(block) {
   const rows = [...block.children];
+
+  // Determine number of columns from first row
+  const numCols = rows[0] ? rows[0].children.length : 0;
+  if (numCols === 0) return;
+
+  // Collect content by column
+  const columns = [];
+  for (let i = 0; i < numCols; i++) {
+    columns[i] = [];
+  }
+
+  rows.forEach((row) => {
+    const cells = [...row.children];
+    cells.forEach((cell, colIndex) => {
+      if (colIndex < numCols) {
+        columns[colIndex].push(cell);
+      }
+    });
+  });
+
+  // Clear and rebuild
   block.innerHTML = '';
   block.className = 'pricing-cards';
 
-  // Each row might contain multiple columns (cards side by side)
-  // Or each row might be a separate card — handle both
-  rows.forEach((row) => {
-    const cells = [...row.children];
+  // Create a card for each column
+  columns.forEach((columnCells) => {
+    const card = document.createElement('div');
+    card.className = 'pricing-card';
 
-    cells.forEach((cell) => {
-      const card = document.createElement('div');
-      card.className = 'pricing-card';
-
-      // Get all the content elements
+    columnCells.forEach((cell) => {
       const elements = [...cell.children];
+      if (elements.length === 0 && cell.textContent.trim()) {
+        // Cell has text but no child elements - create a paragraph
+        const p = document.createElement('p');
+        p.textContent = cell.textContent.trim();
+        elements.push(p);
+      }
 
       elements.forEach((el) => {
         const text = el.textContent.trim();
+        if (!text && !el.querySelector('a')) return;
 
         // ALL CAPS text = eyebrow
-        if (el.tagName === 'P' && text === text.toUpperCase() && text.length > 5 && !el.querySelector('a')) {
+        if (text === text.toUpperCase() && text.length > 5 && !el.querySelector('a') && !text.includes('$')) {
           const eyebrow = document.createElement('div');
           eyebrow.className = 'pricing-card-eyebrow';
           eyebrow.textContent = text;
@@ -50,29 +57,23 @@ export default function decorate(block) {
           return;
         }
 
-        // Headings = speed tier (also detect bold text or "Up to X" pattern)
-        if (el.tagName.match(/^H[1-6]$/) ||
-            (el.querySelector('strong') && text.toLowerCase().includes('mbps')) ||
-            text.match(/^up to \d+/i) ||
-            text.match(/\d+\s*(mbps|gig)/i)) {
+        // Speed tier detection
+        if (text.match(/^up to \d+/i) || text.match(/\d+\s*(mbps|gig)/i)) {
           const speed = document.createElement('div');
           speed.className = 'pricing-card-speed';
           speed.textContent = text;
           card.appendChild(speed);
 
-          // Add divider after speed
           const divider = document.createElement('div');
           divider.className = 'pricing-card-divider';
           card.appendChild(divider);
           return;
         }
 
-        // Bold text with $ = price
+        // Price detection
         if (text.includes('$') && !el.querySelector('a')) {
-          // Check if it looks like a main price line
           const priceMatch = text.match(/\$(\d+)/);
           if (priceMatch) {
-            // Check if there's a label before the price
             const parts = text.split('$');
             if (parts[0].trim()) {
               const label = document.createElement('div');
@@ -89,22 +90,12 @@ export default function decorate(block) {
               <span class="period">/mo</span>
             `;
             card.appendChild(priceDiv);
-
-            // Check for remaining text after price (bundle info)
-            const afterPrice = text.split(/\/mo\.?\s*/)[1];
-            if (afterPrice) {
-              const bundle = document.createElement('div');
-              bundle.className = 'pricing-card-bundle';
-              bundle.textContent = afterPrice;
-              card.appendChild(bundle);
-            }
             return;
           }
         }
 
-        // Text mentioning "bundle" or "save" = bundle info
-        if ((text.toLowerCase().includes('bundle') || text.toLowerCase().includes('save'))
-            && !el.querySelector('a') && !text.includes('$')) {
+        // Bundle info
+        if ((text.toLowerCase().includes('bundle') || text.toLowerCase().includes('save') || text.toLowerCase().includes('guarantee')) && !el.querySelector('a')) {
           const bundle = document.createElement('div');
           bundle.className = 'pricing-card-bundle';
           bundle.textContent = text;
@@ -112,26 +103,23 @@ export default function decorate(block) {
           return;
         }
 
-        // Unordered list = features
+        // Bullet list
         if (el.tagName === 'UL') {
           const features = el.cloneNode(true);
           features.className = 'pricing-card-features';
-          // Add checkmark styling via CSS (no need to modify list items)
           card.appendChild(features);
           return;
         }
 
-        // Paragraph with bullet characters (•, ●, *) = features list
-        if (el.tagName === 'P' && (text.includes('•') || text.includes('●') || text.startsWith('*'))) {
-          // Check if we already have a features list, if not create one
+        // Bullet characters in text
+        if (text.includes('•') || text.includes('●')) {
           let features = card.querySelector('.pricing-card-features');
           if (!features) {
             features = document.createElement('ul');
             features.className = 'pricing-card-features';
             card.appendChild(features);
           }
-          // Handle multiple bullets in one paragraph (split by bullet char)
-          const bulletLines = text.split(/[•●*]/).filter((line) => line.trim());
+          const bulletLines = text.split(/[•●]/).filter((line) => line.trim());
           bulletLines.forEach((bulletText) => {
             const li = document.createElement('li');
             li.textContent = bulletText.trim();
@@ -150,16 +138,12 @@ export default function decorate(block) {
           card.appendChild(btn);
           return;
         }
-
-        // Everything else = regular paragraph
-        if (text) {
-          const p = el.cloneNode(true);
-          p.className = 'pricing-card-text';
-          card.appendChild(p);
-        }
       });
-
-      block.appendChild(card);
     });
+
+    // Only add card if it has content
+    if (card.children.length > 0) {
+      block.appendChild(card);
+    }
   });
 }
