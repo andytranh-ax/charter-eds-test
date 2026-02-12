@@ -533,80 +533,52 @@ export default function decorate(block) {
   block.appendChild(featureSection);
 
   // ========================================
-  // TESTIMONIALS CAROUSEL
+  // TESTIMONIALS - INFINITE MARQUEE
   // ========================================
   const testimonialSection = document.createElement('section');
   testimonialSection.className = 'compare-testimonial-section';
 
-  const totalSlides = Math.ceil(data.testimonials.length / 2);
+  const testimonialCards = data.testimonials.map(t => `
+    <div class="compare-testimonial-card">
+      <div class="compare-testimonial-quote">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="quote-icon">
+          <path d="M13.333 14.667H8V10c0-2.945 2.388-5.333 5.333-5.333h1.334V8h-1.334A2.667 2.667 0 0010.667 10.667v1.333h2.666v2.667zm10.667 0H18.667V10c0-2.945 2.388-5.333 5.333-5.333h1.333V8H24A2.667 2.667 0 0021.333 10.667v1.333H24v2.667z" fill="currentColor"/>
+        </svg>
+        <p>"${t.quote}"</p>
+      </div>
+      <div class="compare-testimonial-author">
+        <div class="compare-author-avatar">${t.author.split(' ').map(n => n[0]).join('')}</div>
+        <div class="compare-author-info">
+          <span class="compare-author-name">${t.author}</span>
+          <span class="compare-author-role">${t.role}</span>
+          <span class="compare-author-location">${t.location}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
 
   testimonialSection.innerHTML = `
     <div class="compare-section-header">
       <h2>What Business Owners Say</h2>
       <p>Real customers who made the switch</p>
     </div>
-    <div class="compare-testimonial-carousel">
+    <div class="compare-testimonial-marquee">
       <div class="compare-testimonial-track">
-        ${Array.from({ length: totalSlides }, (_, slideIndex) => `
-          <div class="compare-testimonial-slide ${slideIndex === 0 ? 'is-active' : ''}">
-            ${data.testimonials.slice(slideIndex * 2, slideIndex * 2 + 2).map(t => `
-              <div class="compare-testimonial-card">
-                <div class="compare-testimonial-quote">
-                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="quote-icon">
-                    <path d="M13.333 14.667H8V10c0-2.945 2.388-5.333 5.333-5.333h1.334V8h-1.334A2.667 2.667 0 0010.667 10.667v1.333h2.666v2.667zm10.667 0H18.667V10c0-2.945 2.388-5.333 5.333-5.333h1.333V8H24A2.667 2.667 0 0021.333 10.667v1.333H24v2.667z" fill="currentColor"/>
-                  </svg>
-                  <p>"${t.quote}"</p>
-                </div>
-                <div class="compare-testimonial-author">
-                  <div class="compare-author-avatar">${t.author.split(' ').map(n => n[0]).join('')}</div>
-                  <div class="compare-author-info">
-                    <span class="compare-author-name">${t.author}</span>
-                    <span class="compare-author-role">${t.role}</span>
-                    <span class="compare-author-location">${t.location}</span>
-                  </div>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        `).join('')}
-      </div>
-      <div class="compare-testimonial-nav">
-        ${Array.from({ length: totalSlides }, (_, i) => `
-          <button class="compare-testimonial-dot ${i === 0 ? 'is-active' : ''}" data-slide="${i}" aria-label="Go to slide ${i + 1}"></button>
-        `).join('')}
+        ${testimonialCards}
+        ${testimonialCards}
       </div>
     </div>
   `;
   block.appendChild(testimonialSection);
 
-  // Testimonial carousel logic
-  let currentSlide = 0;
-  const track = testimonialSection.querySelector('.compare-testimonial-track');
-  const slides = testimonialSection.querySelectorAll('.compare-testimonial-slide');
-  const dots = testimonialSection.querySelectorAll('.compare-testimonial-dot');
-
-  function goToSlide(index) {
-    currentSlide = index;
-    slides.forEach((slide, i) => {
-      slide.classList.toggle('is-active', i === index);
-    });
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('is-active', i === index);
-    });
-  }
-
-  // Dot navigation
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      goToSlide(parseInt(dot.dataset.slide, 10));
-    });
+  // Pause on hover
+  const marquee = testimonialSection.querySelector('.compare-testimonial-marquee');
+  marquee.addEventListener('mouseenter', () => {
+    marquee.classList.add('is-paused');
   });
-
-  // Auto-cycle every 5 seconds
-  setInterval(() => {
-    const nextSlide = (currentSlide + 1) % totalSlides;
-    goToSlide(nextSlide);
-  }, 5000);
+  marquee.addEventListener('mouseleave', () => {
+    marquee.classList.remove('is-paused');
+  });
 
   // ========================================
   // CTA SECTION (with disclaimer integrated)
