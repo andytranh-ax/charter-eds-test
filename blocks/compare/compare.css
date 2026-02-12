@@ -5,6 +5,7 @@
 
 .compare {
   --compare-gradient: linear-gradient(135deg, var(--color-primary, #0051BF) 0%, var(--color-accent, #0074E8) 100%);
+  scroll-snap-type: y proximity;
 }
 
 /* Reduce space above page title - matches space below */
@@ -498,6 +499,8 @@ main .section:has(.compare) {
   padding: var(--space-8, 32px) var(--space-6, 24px) var(--space-16, 64px);
   max-width: var(--max-width, 1200px);
   margin: 0 auto;
+  scroll-snap-align: start;
+  scroll-margin-top: 20px;
 }
 
 .compare-price-grid {
@@ -512,10 +515,20 @@ main .section:has(.compare) {
   border: 1px solid var(--color-gray-200, #E9ECEF);
   border-radius: var(--radius-lg, 16px);
   padding: var(--space-6, 24px);
-  transition: all var(--duration-base, 200ms) var(--ease-default);
+  transition: all var(--duration-base, 200ms) var(--ease-default),
+              opacity 0.6s ease-out,
+              transform 0.6s ease-out;
+  /* Start hidden for animation */
+  opacity: 0;
+  transform: translateY(40px);
 }
 
-.compare-price-card:hover {
+.compare-price-card.card-animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.compare-price-card.card-animate-in:hover {
   box-shadow: var(--shadow-lg);
   transform: translateY(-4px);
 }

@@ -354,10 +354,11 @@ export default function decorate(block) {
   block.appendChild(tierSection);
 
   // ========================================
-  // PRICE COMPARISON CARDS
+  // PRICE COMPARISON CARDS (with scroll-snap & staggered animation)
   // ========================================
   const priceSection = document.createElement('section');
   priceSection.className = 'compare-price-section';
+  priceSection.id = 'compare-prices';
 
   function renderPriceCards(tierIndex) {
     const spectrum = data.providers.find(p => p.isHighlighted);
@@ -372,7 +373,7 @@ export default function decorate(block) {
           const savingsPercent = Math.round((savings / price) * 100);
 
           return `
-            <div class="compare-price-card ${isSpectrum ? 'is-spectrum' : ''}" data-animate>
+            <div class="compare-price-card ${isSpectrum ? 'is-spectrum' : ''}" data-card-index="${data.providers.indexOf(provider)}"
               ${isSpectrum ? '<div class="compare-price-badge">Best Value</div>' : ''}
               <div class="compare-price-header">
                 <div class="compare-provider-logo" data-provider="${provider.logo}">
@@ -431,6 +432,24 @@ export default function decorate(block) {
 
   renderPriceCards(1); // Default to middle tier
   block.appendChild(priceSection);
+
+  // Staggered card animation on scroll
+  const priceObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        priceSection.classList.add('cards-visible');
+        const cards = priceSection.querySelectorAll('.compare-price-card');
+        cards.forEach((card, i) => {
+          setTimeout(() => {
+            card.classList.add('card-animate-in');
+          }, i * 150); // 150ms stagger between each card
+        });
+        priceObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  priceObserver.observe(priceSection);
 
   // ========================================
   // ANNUAL SAVINGS VISUALIZATION
