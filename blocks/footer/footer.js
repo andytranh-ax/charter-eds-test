@@ -83,32 +83,47 @@ export default async function decorate(block) {
     footerColumns.innerHTML = `
       <div class="footer-col">
         <h4>Company</h4>
-        <a href="/about">About Charter</a>
-        <a href="/careers">Careers</a>
-        <a href="/newsroom">Newsroom</a>
-        <a href="/investors">Investors</a>
+        <a href="https://www.spectrum.com/about">About Charter</a>
+        <a href="https://www.spectrum.com/business/about">About Spectrum Business</a>
+        <a href="https://www.spectrum.com/business/commitment">Customer Commitment</a>
+        <a href="https://enterprise.spectrum.com">Spectrum Enterprise</a>
+        <a href="https://www.spectrumreach.com">Spectrum Reach</a>
+        <a href="https://www.spectrum.com">Residential Services</a>
+        <a href="https://jobs.spectrum.com">Careers</a>
+        <a href="https://corporate.spectrum.com/newsroom">Newsroom</a>
+        <a href="https://ir.charter.com">Investors</a>
       </div>
       <div class="footer-col">
         <h4>Shop</h4>
-        <a href="/bundles">Bundles & Promotions</a>
-        <a href="/internet">Spectrum Business Internet</a>
-        <a href="/phone">Spectrum Business Phone</a>
-        <a href="/mobile">Spectrum Mobile</a>
-        <a href="/tv">Spectrum Business TV</a>
+        <a href="https://www.spectrum.com/business/bundles">Bundles & Promotions</a>
+        <a href="https://www.spectrum.com/business/internet">Spectrum Business Internet</a>
+        <a href="https://www.spectrum.com/business/phone">Spectrum Business Voice</a>
+        <a href="https://www.spectrum.com/business/phone/business-connect">Spectrum Business Connect</a>
+        <a href="https://www.spectrum.com/business/mobile">Spectrum Mobile</a>
+        <a href="https://www.spectrum.com/business/tv">Spectrum Business TV</a>
       </div>
       <div class="footer-col">
         <h4>Explore</h4>
-        <a href="/my-account">Services in My Area</a>
-        <a href="/new-business">New Business Toolkit</a>
-        <a href="/partners">Partner Program</a>
-        <a href="/wifi-policy">Spectrum WiFi Business Policy</a>
+        <a href="https://www.spectrum.com/business/services">Services In My Area</a>
+        <a href="https://www.spectrum.com/business/insights">Spectrum Business Insights</a>
+        <a href="https://www.spectrum.com/business/toolkit">New Business Toolkit</a>
+        <a href="https://www.spectrum.com/business/speed-test">Test Your Internet Speed</a>
+        <a href="https://www.spectrum.com/business/tv/channel-lineup">Channel Lineup</a>
+        <a href="https://www.spectrum.com/business/wifi">Spectrum WiFi Access Points</a>
+        <a href="https://www.spectrum.com/business/contract-buyout">Contract Buyout</a>
+        <a href="https://www.spectrum.com/business/guarantee">30 Day Guarantee</a>
+        <a href="https://www.spectrum.com/business/partners">Partner Program</a>
+        <a href="https://www.spectrum.com/business/wholesale">Wholesale</a>
+        <a href="https://www.spectrum.com/business/referral">Referral Program</a>
       </div>
       <div class="footer-col">
         <h4>Help & Support</h4>
-        <a href="/contact">Contact Spectrum Business</a>
-        <a href="/support">Support</a>
-        <a href="/stores">Store Locator</a>
-        <a href="/sitemap">Sitemap</a>
+        <a href="https://www.spectrum.com/business/contact">Contact Spectrum Business</a>
+        <a href="https://www.spectrum.com/business/account">Manage Account</a>
+        <a href="https://www.spectrum.com/business/support">Support</a>
+        <a href="https://www.spectrum.com/business/upgrade">Upgrade</a>
+        <a href="https://www.spectrum.com/stores">Store Locator</a>
+        <a href="https://www.spectrum.com/business/sitemap">Sitemap</a>
       </div>
     `;
   }
@@ -121,17 +136,18 @@ export default async function decorate(block) {
   const legalLinks = document.createElement('div');
   legalLinks.className = 'footer-legal-links';
   legalLinks.innerHTML = `
-    <a href="/privacy">Your Privacy Rights</a>
-    <a href="/accessibility">Accessibility</a>
-    <a href="/california-privacy">California Consumer Privacy Rights</a>
-    <a href="/privacy-policy">Privacy Policy</a>
-    <a href="/terms">Terms of Service</a>
+    <a href="https://www.spectrum.com/privacy">Your Privacy Rights</a>
+    <a href="https://www.spectrum.com/accessibility">Accessibility</a>
+    <a href="https://www.spectrum.com/california-privacy">California Consumer Privacy Policy</a>
+    <a href="https://www.spectrum.com/do-not-sell">Do Not Sell or Share My Personal Information</a>
+    <a href="https://www.spectrum.com/privacy-policy">Privacy Policy</a>
+    <a href="https://www.spectrum.com/terms">AUP & Terms of Service</a>
   `;
   footerLegal.appendChild(legalLinks);
 
   const disclaimer = document.createElement('p');
   disclaimer.className = 'footer-disclaimer';
-  disclaimer.textContent = 'We use cookies and similar technologies to personalize and improve your experience, and for analytics and advertising purposes. By using our website, you agree to our Privacy Policy and Terms of Service.';
+  disclaimer.textContent = 'Not all products, pricing and services are available in all areas. Pricing and actual speeds may vary. Internet speeds based on wired connection. Restrictions apply. ©2026 Charter Communications. All rights reserved.';
   footerLegal.appendChild(disclaimer);
 
   footerInner.appendChild(footerLegal);
