@@ -4,69 +4,99 @@
  * FILE: blocks/columns/columns.css
  */
 
+/* Section wrapper needs gray background */
+main .section:has(.columns) {
+  background: var(--color-gray-50, #F8F9FA);
+  max-width: none;
+  padding: 0;
+}
+
 .columns {
-  max-width: 1200px;
+  max-width: var(--max-width, 1200px);
   margin: 0 auto;
-  padding: 64px 24px;
+  padding: var(--space-3xl, 64px) var(--space-lg, 24px);
 }
 
 .columns > div {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 64px;
+  gap: var(--space-3xl, 64px);
   align-items: center;
 }
 
 /* Image side */
-.columns .columns-image {
-  border-radius: 16px;
+.columns .columns-image,
+.columns > div > div:first-child {
+  position: relative;
+  border-radius: var(--radius-lg, 16px);
   overflow: hidden;
 }
 
-.columns .columns-image img {
+.columns .columns-image img,
+.columns > div > div:first-child picture img {
   width: 100%;
   height: 400px;
   object-fit: cover;
-  border-radius: 16px;
+  border-radius: var(--radius-lg, 16px);
+}
+
+/* Image overlay caption */
+.columns .columns-image-overlay {
+  position: absolute;
+  bottom: var(--space-lg, 24px);
+  left: var(--space-lg, 24px);
+  right: var(--space-lg, 24px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-md, 12px);
+  padding: var(--space-md, 16px) var(--space-lg, 24px);
+  color: white;
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  font-size: 18px;
+  font-weight: 700;
 }
 
 /* Text side */
-.columns .columns-text {
-  padding: 16px 0;
+.columns .columns-text,
+.columns > div > div:last-child {
+  padding: var(--space-md, 16px) 0;
 }
 
 .columns .columns-eyebrow {
-  font-family: var(--font-heading, sans-serif);
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 3px;
   color: var(--color-primary, #0051BF);
-  margin-bottom: 16px;
+  margin-bottom: var(--space-md, 16px);
 }
 
 .columns .columns-text h2,
-.columns .columns-text h3 {
-  font-family: var(--font-heading, sans-serif);
+.columns .columns-text h3,
+.columns > div > div:last-child h2,
+.columns > div > div:last-child h3 {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
   font-size: clamp(28px, 3vw, 40px);
   font-weight: 800;
   color: var(--color-dark, #0D1117);
-  margin-bottom: 24px;
+  margin-bottom: var(--space-lg, 24px);
   letter-spacing: -1px;
   line-height: 1.1;
 }
 
-.columns .columns-text p {
+.columns .columns-text p,
+.columns > div > div:last-child p {
   font-size: 16px;
   color: var(--color-gray-500, #6C757D);
   line-height: 1.7;
-  margin-bottom: 32px;
+  margin-bottom: var(--space-xl, 32px);
 }
 
 /* ---- Mobile ---- */
 @media (max-width: 900px) {
   .columns > div {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: var(--space-xl, 32px);
   }
 }
