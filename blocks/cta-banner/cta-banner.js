@@ -1,50 +1,49 @@
 /*
  * CTA BANNER BLOCK
- * ================
- * FILE: blocks/cta-banner/cta-banner.js
- *
- * HOW TO ADD: Create blocks/cta-banner/cta-banner.js in your repo
- *
- * WHAT THIS BLOCK EXPECTS IN GOOGLE DOCS:
- * Create a 1-column table. First row says "cta-banner".
- * Second row contains:
- *   - A heading (bold or heading style)
- *   - A paragraph of description text
- *   - One or more links (become buttons)
+ * Processes rows: heading, description, CTAs
  */
 export default function decorate(block) {
-  const content = block.querySelector('div > div');
-  if (!content) return;
-
-  // Wrap everything in centered container
   const wrapper = document.createElement('div');
   wrapper.className = 'cta-banner-inner';
 
-  // Move all content into wrapper
-  while (content.firstChild) {
-    wrapper.appendChild(content.firstChild);
-  }
+  // Process each row
+  [...block.children].forEach((row) => {
+    const cell = row.children[0];
+    if (!cell) return;
 
-  // Style buttons
-  const links = wrapper.querySelectorAll('a');
-  if (links.length > 0) {
-    const ctaDiv = document.createElement('div');
-    ctaDiv.className = 'cta-banner-actions';
+    const text = cell.textContent.trim();
+    if (!text) return;
 
-    links.forEach((link, index) => {
-      // Remove from parent paragraph
-      const parent = link.parentElement;
-      link.className = index === 0 ? 'button primary' : 'button secondary';
-      ctaDiv.appendChild(link);
-      // Remove empty paragraph
-      if (parent && parent.tagName === 'P' && !parent.textContent.trim()) {
-        parent.remove();
-      }
-    });
+    // Check for links (CTAs)
+    const links = cell.querySelectorAll('a');
+    if (links.length > 0) {
+      const ctaDiv = document.createElement('div');
+      ctaDiv.className = 'cta-banner-actions';
+      links.forEach((link, i) => {
+        const btn = document.createElement('a');
+        btn.href = link.href;
+        btn.className = i === 0 ? 'button primary' : 'button secondary';
+        btn.textContent = link.textContent;
+        ctaDiv.appendChild(btn);
+      });
+      wrapper.appendChild(ctaDiv);
+      return;
+    }
 
-    wrapper.appendChild(ctaDiv);
-  }
+    // Bold/strong = heading
+    if (cell.querySelector('strong') || cell.querySelector('h1, h2, h3')) {
+      const h2 = document.createElement('h2');
+      h2.textContent = text;
+      wrapper.appendChild(h2);
+      return;
+    }
 
-  block.innerHTML = '';
+    // Regular text = description
+    const p = document.createElement('p');
+    p.textContent = text;
+    wrapper.appendChild(p);
+  });
+
+  block.textContent = '';
   block.appendChild(wrapper);
 }

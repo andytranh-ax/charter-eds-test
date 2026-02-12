@@ -70,7 +70,16 @@ export default function decorate(block) {
           return;
         }
 
-        // Price detection
+        // Bundle info (check BEFORE price to avoid "$25" being parsed as price)
+        if ((text.toLowerCase().includes('bundle') || text.toLowerCase().includes('save') || text.toLowerCase().includes('guarantee')) && !el.querySelector('a')) {
+          const bundle = document.createElement('div');
+          bundle.className = 'pricing-card-bundle';
+          bundle.textContent = text;
+          card.appendChild(bundle);
+          return;
+        }
+
+        // Price detection (only for main prices like "$65/mo", not bundle savings)
         if (text.includes('$') && !el.querySelector('a')) {
           const priceMatch = text.match(/\$(\d+)/);
           if (priceMatch) {
@@ -92,15 +101,6 @@ export default function decorate(block) {
             card.appendChild(priceDiv);
             return;
           }
-        }
-
-        // Bundle info
-        if ((text.toLowerCase().includes('bundle') || text.toLowerCase().includes('save') || text.toLowerCase().includes('guarantee')) && !el.querySelector('a')) {
-          const bundle = document.createElement('div');
-          bundle.className = 'pricing-card-bundle';
-          bundle.textContent = text;
-          card.appendChild(bundle);
-          return;
         }
 
         // Bullet list
