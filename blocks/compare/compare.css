@@ -15,6 +15,7 @@
 /* Remove bottom gap before footer */
 main .section:has(.compare) {
   padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 /* ========================================
@@ -170,6 +171,14 @@ main .section:has(.compare) {
   line-height: var(--leading-relaxed, 1.6);
   color: var(--color-gray-300, #DEE2E6);
   margin: 0;
+}
+
+.compare-hero-service {
+  font-family: var(--font-heading);
+  font-size: clamp(20px, 3vw, var(--text-2xl, 28px));
+  font-weight: var(--font-semibold, 600);
+  color: #0074E8;
+  margin: 0 0 var(--space-4, 16px) 0;
 }
 
 .compare-hero-visual {
@@ -631,6 +640,14 @@ main .section:has(.compare) {
   margin: 0 0 var(--space-2, 8px);
 }
 
+.compare-savings-service {
+  display: block;
+  font-size: var(--text-lg, 18px);
+  font-weight: var(--font-medium, 500);
+  color: var(--color-primary, #0051BF);
+  margin-top: var(--space-1, 4px);
+}
+
 .compare-savings-header p {
   font-family: var(--font-body);
   font-size: var(--text-base, 15px);
@@ -949,6 +966,8 @@ main .section:has(.compare) {
   margin-right: calc(-50vw + 50%);
   padding-left: calc(50vw - 50%);
   padding-right: calc(50vw - 50%);
+  /* Ensure no gap before footer */
+  margin-bottom: 0;
 }
 
 .compare-cta-content {

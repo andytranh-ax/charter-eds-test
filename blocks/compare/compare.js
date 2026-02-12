@@ -201,6 +201,7 @@ export default function decorate(block) {
     <div class="compare-hero-content">
       <span class="compare-hero-badge">Price Comparison</span>
       <h2 class="compare-hero-title">See How Much You Could Save</h2>
+      <p class="compare-hero-service" style="color: #00BFFF; font-size: 24px; margin: 8px 0 16px 0;">for Business Internet</p>
       <p class="compare-hero-subtitle">See how Spectrum Business stacks up against major competitors. Real prices. Real savings. No surprises.</p>
     </div>
     <div class="compare-hero-stat">
@@ -233,6 +234,18 @@ export default function decorate(block) {
 
         // Update button text
         filterValue.textContent = service;
+
+        // Update hero section service text
+        const heroService = document.querySelector('.compare-hero-service');
+        if (heroService) {
+          heroService.textContent = `for Business ${service}`;
+        }
+
+        // Update savings section header
+        const savingsService = document.querySelector('.compare-savings-service');
+        if (savingsService) {
+          savingsService.textContent = `on Business ${service}`;
+        }
 
         // Sync typewriter to selected service
         currentServiceIndex = services.indexOf(service);
@@ -382,11 +395,14 @@ export default function decorate(block) {
 
     const avgAnnual = Math.round(savingsData.reduce((sum, s) => sum + s.annual, 0) / savingsData.length);
 
+    // Get current service from filter
+    const currentService = document.querySelector('.compare-filter-value')?.textContent || 'Internet';
+
     savingsSection.innerHTML = `
       <div class="compare-savings-container">
         <div class="compare-savings-main">
           <div class="compare-savings-header">
-            <h2>Your Annual Savings</h2>
+            <h2>Your Annual Savings <span class="compare-savings-service">on Business ${currentService}</span></h2>
             <p>See how much you could save by switching to Spectrum Business</p>
           </div>
           <div class="compare-savings-display">
