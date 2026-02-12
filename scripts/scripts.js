@@ -15,6 +15,28 @@ import {
 const LCP_BLOCKS = ['hero'];
 
 /**
+ * Loads the header block.
+ * @param {Element} header The header element
+ */
+async function loadHeader(header) {
+  const headerBlock = buildBlock('header', '');
+  header.append(headerBlock);
+  decorateBlocks(header);
+  await loadBlock(headerBlock);
+}
+
+/**
+ * Loads the footer block.
+ * @param {Element} footer The footer element
+ */
+async function loadFooter(footer) {
+  const footerBlock = buildBlock('footer', '');
+  footer.append(footerBlock);
+  decorateBlocks(footer);
+  await loadBlock(footerBlock);
+}
+
+/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
@@ -94,6 +116,12 @@ async function loadLazy(doc) {
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
+
+  // Load header and footer
+  const header = doc.querySelector('header');
+  const footer = doc.querySelector('footer');
+  loadHeader(header);
+  loadFooter(footer);
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
