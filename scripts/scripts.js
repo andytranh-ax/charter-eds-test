@@ -137,6 +137,9 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
+    // Run same-page section-level experiments (for A/B tests within same doc)
+    const { runExperiments } = await import('./experimentation.js');
+    runExperiments();
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
