@@ -7,6 +7,34 @@ header {
   border-bottom: 1px solid var(--color-gray-200, #e9ecef);
 }
 
+/* Utility bar - dark blue strip at top */
+.header-utility {
+  background: var(--color-dark, #0D1117);
+  padding: 8px 0;
+}
+
+.header-utility-inner {
+  max-width: var(--max-width, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--space-lg, 24px);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header-utility-link {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-white, #fff);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.header-utility-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
 .header-wrapper {
   max-width: var(--max-width, 1200px);
   margin: 0 auto;

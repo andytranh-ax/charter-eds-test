@@ -6,6 +6,16 @@
 export default async function decorate(block) {
   block.textContent = '';
 
+  // Utility bar (dark blue bar at very top)
+  const utilityBar = document.createElement('div');
+  utilityBar.className = 'header-utility';
+  utilityBar.innerHTML = `
+    <div class="header-utility-inner">
+      <a href="https://www.spectrum.net/account" class="header-utility-link">My Account</a>
+    </div>
+  `;
+  block.appendChild(utilityBar);
+
   // Main header wrapper
   const headerWrapper = document.createElement('div');
   headerWrapper.className = 'header-wrapper';
