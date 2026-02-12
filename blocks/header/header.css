@@ -212,7 +212,7 @@ header {
 
   /* Mobile: Collapsed serviceability bar */
   .serviceability {
-    padding: 6px 0;
+    padding: 10px 0;
   }
 
   .serviceability-inner {
@@ -230,26 +230,33 @@ header {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: var(--color-white, #fff);
-    border: 1px solid var(--color-gray-200, #e9ecef);
+    background: var(--color-primary, #0051bf);
+    border: none;
     border-radius: 9999px;
-    padding: 10px 20px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--color-gray-600, #495057);
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
     cursor: pointer;
     width: 100%;
-    max-width: 280px;
-    margin: 0 auto;
+    max-width: 100%;
   }
 
   .serviceability-toggle svg {
-    width: 16px;
-    height: 16px;
-    stroke: var(--color-primary, #0051bf);
+    width: 18px;
+    height: 18px;
+    stroke: #fff;
+  }
+
+  .serviceability-toggle:active {
+    transform: scale(0.98);
   }
 
   /* Expanded state on mobile */
+  .serviceability.is-expanded {
+    padding: 16px 0;
+  }
+
   .serviceability.is-expanded .serviceability-toggle {
     display: none;
   }
@@ -257,9 +264,11 @@ header {
   .serviceability.is-expanded .serviceability-form {
     display: flex;
     flex-direction: column;
-    border-radius: 12px;
-    padding: 12px;
-    gap: 8px;
+    border-radius: 0;
+    border: none;
+    padding: 0;
+    gap: 12px;
+    background: transparent;
   }
 
   .serviceability.is-expanded .serviceability-form .divider {
@@ -268,15 +277,24 @@ header {
 
   .serviceability.is-expanded .serviceability-form input {
     width: 100%;
-    text-align: center;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid var(--color-gray-200, #e9ecef);
+    text-align: left;
+    padding: 14px 16px;
+    font-size: 16px;
+    border: 1px solid var(--color-gray-300, #dee2e6);
     border-radius: 8px;
+    background: #fff;
+  }
+
+  .serviceability.is-expanded .serviceability-form input:focus {
+    border-color: var(--color-primary, #0051bf);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 81, 191, 0.1);
   }
 
   .serviceability.is-expanded .serviceability-btn {
     width: 100%;
+    padding: 14px 24px;
+    font-size: 16px;
     margin-top: 4px;
   }
 
@@ -288,9 +306,11 @@ header {
   .serviceability.is-expanded .serviceability-close {
     display: block;
     text-align: center;
-    margin-top: 8px;
-    font-size: 12px;
-    color: var(--color-gray-500, #6c757d);
+    margin-top: 12px;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-primary, #0051bf);
     cursor: pointer;
   }
 }
