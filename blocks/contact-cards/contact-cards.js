@@ -55,10 +55,15 @@ export default function decorate(block) {
 
       elements.forEach((el) => {
         const text = el.textContent.trim();
-        if (!text && !el.querySelector('a')) return;
+
+        // Check if element IS a link or contains a link
+        const isLink = el.tagName === 'A';
+        const hasLink = el.querySelector('a');
+
+        if (!text && !isLink && !hasLink) return;
 
         // Headings or bold text
-        if (el.tagName.match(/^H[1-6]$/) || el.querySelector('strong')) {
+        if (el.tagName.match(/^H[1-6]$/) || el.querySelector('strong') || (el.tagName === 'STRONG')) {
           const h3 = document.createElement('h3');
           h3.textContent = text;
           card.appendChild(h3);
@@ -69,9 +74,9 @@ export default function decorate(block) {
           return;
         }
 
-        // Links
-        if (el.querySelector('a')) {
-          const link = el.querySelector('a');
+        // Links - check if element IS a link OR contains a link
+        if (isLink || hasLink) {
+          const link = isLink ? el : el.querySelector('a');
           const a = document.createElement('a');
           a.href = link.href;
           a.className = 'contact-link';

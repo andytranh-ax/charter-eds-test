@@ -48,29 +48,46 @@ export default async function decorate(block) {
       const temp = document.createElement('div');
       temp.innerHTML = html;
 
-      // Process footer content - look for headings and lists
-      const sections = temp.querySelectorAll('div > div');
-      sections.forEach((section) => {
-        const col = document.createElement('div');
-        col.className = 'footer-col';
+      // Process footer content - structure is flat: H2 followed by P>A elements
+      const container = temp.querySelector('div') || temp;
+      const children = [...container.children];
 
-        const heading = section.querySelector('h2, h3, h4, strong');
-        if (heading) {
-          const h4 = document.createElement('h4');
-          h4.textContent = heading.textContent;
-          col.appendChild(h4);
+      let currentCol = null;
+      let colCount = 0;
+
+      children.forEach((el) => {
+        // New column starts with H2
+        if (el.tagName === 'H2') {
+          // Skip "Legal" section - handle separately
+          if (el.textContent.toLowerCase() === 'legal') {
+            currentCol = null;
+            return;
+          }
+
+          // Only create 4 columns for the main footer
+          if (colCount < 4) {
+            currentCol = document.createElement('div');
+            currentCol.className = 'footer-col';
+
+            const h4 = document.createElement('h4');
+            h4.textContent = el.textContent;
+            currentCol.appendChild(h4);
+
+            footerColumns.appendChild(currentCol);
+            colCount++;
+          }
+          return;
         }
 
-        const links = section.querySelectorAll('a');
-        links.forEach((link) => {
-          const a = document.createElement('a');
-          a.href = link.href;
-          a.textContent = link.textContent;
-          col.appendChild(a);
-        });
-
-        if (col.children.length > 0) {
-          footerColumns.appendChild(col);
+        // Add links to current column
+        if (currentCol && el.tagName === 'P') {
+          const links = el.querySelectorAll('a');
+          links.forEach((link) => {
+            const a = document.createElement('a');
+            a.href = link.href;
+            a.textContent = link.textContent;
+            currentCol.appendChild(a);
+          });
         }
       });
     }
