@@ -4,17 +4,20 @@
  * FILE: blocks/columns/columns.css
  */
 
-/* Section wrapper needs gray background */
-main .section:has(.columns) {
+/* Columns block with full-width gray background */
+.columns-wrapper {
   background: var(--color-gray-50, #F8F9FA);
-  max-width: none;
-  padding: 0;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
 }
 
 .columns {
   max-width: var(--max-width, 1200px);
   margin: 0 auto;
   padding: var(--space-3xl, 64px) var(--space-lg, 24px);
+  background: var(--color-gray-50, #F8F9FA);
 }
 
 .columns > div {
