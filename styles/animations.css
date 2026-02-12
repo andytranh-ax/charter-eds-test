@@ -318,10 +318,6 @@ a.button:hover::after,
   transition: background 0.3s ease;
 }
 
-.faq-item:hover {
-  background: var(--color-gray-50, #F8F9FA);
-}
-
 .faq-answer {
   transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
               opacity 0.3s ease;
@@ -332,12 +328,15 @@ a.button:hover::after,
 }
 
 .faq-icon {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              color 0.3s ease;
+  transition: color 0.3s ease;
+}
+
+/* Hide the vertical line when open (makes + into -) */
+.faq-item.open .faq-icon::after {
+  opacity: 0;
 }
 
 .faq-item.open .faq-icon {
-  transform: rotate(45deg);
   color: var(--color-primary, #0051BF);
 }
 

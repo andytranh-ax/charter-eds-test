@@ -869,7 +869,7 @@ main .section > .default-content-wrapper > p {
   position: absolute;
   background: currentColor;
   border-radius: 2px;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.3s ease;
 }
 
 /* Horizontal line (always visible) */
@@ -881,7 +881,7 @@ main .section > .default-content-wrapper > p {
   transform: translate(-50%, -50%);
 }
 
-/* Vertical line (rotates away when open) */
+/* Vertical line (fades out when open to make minus) */
 .faq-icon::after {
   width: 2px;
   height: 16px;
@@ -891,7 +891,7 @@ main .section > .default-content-wrapper > p {
 }
 
 .faq-item.open .faq-icon::after {
-  transform: translate(-50%, -50%) rotate(90deg);
+  opacity: 0;
 }
 
 /* Answer — hidden by default, expands when open */
