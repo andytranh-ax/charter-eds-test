@@ -1,10 +1,12 @@
 /*
  * CTA BANNER BLOCK STYLES
- * Dark blue background with white text
+ * Light gray background with dark text, blue buttons
  */
 
 .cta-banner {
-  background: var(--color-primary, #0051BF);
+  background: var(--color-gray-50, #F8F9FA);
+  border-top: 1px solid var(--color-gray-200, #E9ECEF);
+  border-bottom: 1px solid var(--color-gray-200, #E9ECEF);
 }
 
 .cta-banner .cta-banner-inner {
@@ -19,14 +21,14 @@
   font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
   font-size: clamp(24px, 3vw, 36px);
   font-weight: 800;
-  color: white;
+  color: var(--color-dark, #0D1117);
   margin-bottom: var(--space-md, 16px);
   letter-spacing: -0.5px;
 }
 
 .cta-banner p {
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-gray-500, #6C757D);
   margin-bottom: var(--space-xl, 32px);
   max-width: 500px;
   margin-left: auto;
@@ -40,18 +42,20 @@
   flex-wrap: wrap;
 }
 
+/* Primary button - solid blue */
 .cta-banner .button.primary {
-  background: white;
-  color: var(--color-primary, #0051BF);
+  background: var(--color-primary, #0051BF);
+  color: white;
 }
 
 .cta-banner .button.primary:hover {
-  background: var(--color-gray-100, #f1f3f5);
+  background: var(--color-primary-hover, #003D8F);
 }
 
+/* Secondary button - blue outline for phone */
 .cta-banner .button.secondary {
-  color: white;
-  border: 2px solid white;
+  color: var(--color-primary, #0051BF);
+  border: 2px solid var(--color-primary, #0051BF);
   background: transparent;
   padding: 14px 32px;
   border-radius: 9999px;
@@ -59,5 +63,5 @@
 }
 
 .cta-banner .button.secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--color-primary-light, #E8F0FE);
 }
