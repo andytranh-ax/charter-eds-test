@@ -409,15 +409,33 @@ export default function decorate(block) {
       </div>
     `;
 
-    // Animate savings number
-    setTimeout(() => {
-      const numberEl = savingsSection.querySelector('.compare-savings-number');
-      if (numberEl) animateNumber(numberEl, avgAnnual);
-    }, 300);
+    // Animate savings number when visible
+    const numberEl = savingsSection.querySelector('.compare-savings-number');
+    if (numberEl && savingsSection.classList.contains('in-view')) {
+      // Already visible, animate immediately
+      setTimeout(() => animateNumber(numberEl, avgAnnual), 300);
+    }
+    // Otherwise, the intersection observer will trigger it
   }
 
   renderSavings(1);
   block.appendChild(savingsSection);
+
+  // Intersection Observer for savings counter - only animate when visible
+  const savingsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        savingsSection.classList.add('in-view');
+        const numberEl = savingsSection.querySelector('.compare-savings-number');
+        const targetValue = parseInt(numberEl?.dataset.value, 10);
+        if (numberEl && targetValue) {
+          animateNumber(numberEl, targetValue);
+        }
+      }
+    });
+  }, { threshold: 0.3 });
+
+  savingsObserver.observe(savingsSection);
 
   // ========================================
   // FEATURE COMPARISON TABLE
