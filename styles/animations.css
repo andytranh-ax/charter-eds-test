@@ -122,9 +122,9 @@
 /* Base state - hidden before animation */
 .animate-on-scroll {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(24px);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-on-scroll.animate-fade-left {
@@ -154,41 +154,41 @@
 .stagger-children > *:nth-child(6) { transition-delay: 0.5s; }
 
 /* ============================================
-   HERO ANIMATIONS
+   HERO ANIMATIONS (Subtle, Fast)
    ============================================ */
 
 .hero .hero-eyebrow {
-  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.05s both;
 }
 
 .hero h1,
 .hero .hero-heading {
-  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
 }
 
 .hero .hero-features {
-  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.15s both;
 }
 
 .hero .hero-features li {
   opacity: 0;
-  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-.hero .hero-features li:nth-child(1) { animation-delay: 0.35s; }
-.hero .hero-features li:nth-child(2) { animation-delay: 0.45s; }
-.hero .hero-features li:nth-child(3) { animation-delay: 0.55s; }
+.hero .hero-features li:nth-child(1) { animation-delay: 0.2s; }
+.hero .hero-features li:nth-child(2) { animation-delay: 0.25s; }
+.hero .hero-features li:nth-child(3) { animation-delay: 0.3s; }
 
 .hero p {
-  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.25s both;
 }
 
 .hero .hero-ctas {
-  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
 }
 
 .hero .hero-bg img {
-  animation: scaleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 /* ============================================
@@ -251,49 +251,27 @@
 }
 
 /* ============================================
-   BUTTON EFFECTS
+   BUTTON EFFECTS (Subtle)
    ============================================ */
 
 a.button,
 .btn-primary,
 .serviceability-btn {
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              background 0.3s ease;
+  transition: transform 0.15s ease,
+              box-shadow 0.15s ease,
+              background 0.15s ease;
 }
 
 a.button:hover,
 .btn-primary:hover,
 .serviceability-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 81, 191, 0.3);
+  transform: translateY(-1px);
 }
 
 a.button:active,
 .btn-primary:active,
 .serviceability-btn:active {
   transform: translateY(0);
-  box-shadow: 0 4px 12px rgba(0, 81, 191, 0.2);
-}
-
-/* Ripple effect */
-a.button::after,
-.btn-primary::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-  transform: scale(0);
-  opacity: 0;
-  transition: transform 0.5s ease, opacity 0.3s ease;
-}
-
-a.button:hover::after,
-.btn-primary:hover::after {
-  transform: scale(2);
-  opacity: 1;
 }
 
 /* ============================================

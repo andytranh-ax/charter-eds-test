@@ -54,31 +54,10 @@ function initScrollAnimations() {
 }
 
 /**
- * Initialize parallax effects on images
+ * Placeholder - parallax removed (can cause jank)
  */
 function initParallax() {
-  const parallaxImages = document.querySelectorAll('.hero .hero-bg img, .feature-card-image img');
-
-  if (parallaxImages.length === 0) return;
-
-  let ticking = false;
-
-  function updateParallax() {
-    parallaxImages.forEach((img) => {
-      const rect = img.getBoundingClientRect();
-      const scrollPercent = (rect.top + rect.height / 2) / window.innerHeight;
-      const translateY = (scrollPercent - 0.5) * 30; // Subtle parallax
-      img.style.transform = `translateY(${translateY}px) scale(1.05)`;
-    });
-    ticking = false;
-  }
-
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(updateParallax);
-      ticking = true;
-    }
-  }, { passive: true });
+  // Intentionally empty - keeping function for backwards compatibility
 }
 
 /**
@@ -138,9 +117,10 @@ function animateCounter(element) {
 
   if (isNaN(number)) return;
 
-  const duration = 1000;
+  const duration = 800;
   const start = performance.now();
-  const startValue = 0;
+  // Start higher and count DOWN (feels like a deal!)
+  const startValue = Math.floor(number * 1.4);
 
   function update(currentTime) {
     const elapsed = currentTime - start;
@@ -148,7 +128,7 @@ function animateCounter(element) {
 
     // Easing function (ease-out)
     const easeOut = 1 - Math.pow(1 - progress, 3);
-    const currentValue = Math.floor(startValue + (number - startValue) * easeOut);
+    const currentValue = Math.floor(startValue - (startValue - number) * easeOut);
 
     element.textContent = currentValue;
 
@@ -163,24 +143,10 @@ function animateCounter(element) {
 }
 
 /**
- * Initialize magnetic button effect
+ * Placeholder - magnetic effect removed (too gimmicky)
  */
 function initMagneticButtons() {
-  const buttons = document.querySelectorAll('a.button.primary, .serviceability-btn');
-
-  buttons.forEach((btn) => {
-    btn.addEventListener('mousemove', (e) => {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-
-      btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
-    });
-
-    btn.addEventListener('mouseleave', () => {
-      btn.style.transform = 'translate(0, 0)';
-    });
-  });
+  // Intentionally empty - keeping function for backwards compatibility
 }
 
 /**

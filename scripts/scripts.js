@@ -127,6 +127,7 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadCSS(`${window.hlx.codeBasePath}/styles/animations.css`);
+  loadCSS(`${window.hlx.codeBasePath}/styles/refinements.css`);
   loadFonts();
 
   // Load animations
