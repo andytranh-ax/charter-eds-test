@@ -673,15 +673,15 @@ export default function decorate(block) {
 // ========================================
 
 function animateNumber(element, target) {
-  const duration = 1200;
+  const duration = 1500;
   const start = performance.now();
-  const startValue = Math.floor(target * 1.3);
 
   function update(currentTime) {
     const elapsed = currentTime - start;
     const progress = Math.min(elapsed / duration, 1);
-    const easeOut = 1 - Math.pow(1 - progress, 4);
-    const current = Math.round(startValue - (startValue - target) * easeOut);
+    // Ease out cubic - starts fast, slows down at the end
+    const easeOut = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(target * easeOut);
 
     element.textContent = current.toLocaleString();
 
