@@ -243,7 +243,7 @@ export default function decorate(block) {
   // Insert at the very top of the compare block
   block.insertBefore(bubblesContainer, block.firstChild);
 
-  const savingsAmounts = [15, 22, 18, 31, 27, 19, 24, 36, 28, 33, 21, 29, 17, 25, 32];
+  const savingsAmounts = [180, 240, 320, 275, 195, 360, 420, 290, 215, 385, 250, 310, 175, 340, 265];
 
   function createBubble() {
     const bubble = document.createElement('div');
