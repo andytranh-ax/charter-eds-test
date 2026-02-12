@@ -7,6 +7,16 @@
   --compare-gradient: linear-gradient(135deg, var(--color-primary, #0051BF) 0%, var(--color-accent, #0074E8) 100%);
 }
 
+/* Remove white space between compare block and footer */
+main .section:has(.compare) {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+main:has(.compare) {
+  padding-bottom: 0;
+}
+
 /* ========================================
    PAGE HEADER (Title + Filter)
    ======================================== */
