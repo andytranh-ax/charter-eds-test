@@ -1,51 +1,33 @@
 /**
  * Header Block
- * Loads navigation from /nav document and builds header structure
+ * Builds header with logo, segments, nav, and serviceability bar
  */
 
-function buildBrandLogo() {
-  const logo = document.createElement('a');
-  logo.href = '/';
-  logo.className = 'header-logo';
-  logo.innerHTML = `
-    <span class="header-logo-text">Spectrum</span>
-    <span class="header-logo-sub">BUSINESS</span>
-  `;
-  return logo;
-}
-
-function buildMobileMenuButton() {
-  const button = document.createElement('button');
-  button.className = 'header-menu-toggle';
-  button.setAttribute('aria-label', 'Toggle menu');
-  button.innerHTML = `
-    <span class="hamburger-line"></span>
-    <span class="hamburger-line"></span>
-    <span class="hamburger-line"></span>
-  `;
-  button.addEventListener('click', () => {
-    const nav = document.querySelector('.header-nav');
-    nav.classList.toggle('open');
-    button.classList.toggle('open');
-  });
-  return button;
-}
-
 export default async function decorate(block) {
-  // Clear existing content
   block.textContent = '';
 
-  const headerInner = document.createElement('div');
-  headerInner.className = 'header-inner';
+  // Main header wrapper
+  const headerWrapper = document.createElement('div');
+  headerWrapper.className = 'header-wrapper';
 
-  // Top section with logo, nav, and CTA
+  // Top bar: Logo, Segments, Phone
   const headerTop = document.createElement('div');
   headerTop.className = 'header-top';
+  headerTop.innerHTML = `
+    <a href="/" class="header-logo">
+      <span class="header-logo-text">Spectrum</span>
+      <span class="header-logo-sub">BUSINESS</span>
+    </a>
+    <div class="header-segments">
+      <a href="https://www.spectrum.com" class="header-segment">Residential</a>
+      <a href="https://www.spectrum.com/business" class="header-segment active">Business</a>
+      <a href="https://enterprise.spectrum.com" class="header-segment">Enterprise</a>
+    </div>
+    <a href="tel:8664414044" class="header-phone">866-441-4044</a>
+  `;
+  headerWrapper.appendChild(headerTop);
 
-  // Logo
-  headerTop.appendChild(buildBrandLogo());
-
-  // Navigation - load from /nav
+  // Navigation bar
   const nav = document.createElement('nav');
   nav.className = 'header-nav';
 
@@ -55,8 +37,6 @@ export default async function decorate(block) {
       const html = await resp.text();
       const temp = document.createElement('div');
       temp.innerHTML = html;
-
-      // Process nav content - look for links
       const links = temp.querySelectorAll('a');
       if (links.length > 0) {
         links.forEach((link) => {
@@ -64,7 +44,6 @@ export default async function decorate(block) {
           a.href = link.href;
           a.className = 'header-nav-link';
           a.textContent = link.textContent;
-          // Mark Internet as active for this page
           if (link.textContent.toLowerCase() === 'internet') {
             a.classList.add('active');
           }
@@ -73,10 +52,9 @@ export default async function decorate(block) {
       }
     }
   } catch (e) {
-    // Nav failed to load, use fallback
+    // Use fallback
   }
 
-  // Fallback if no links loaded
   if (nav.children.length === 0) {
     nav.innerHTML = `
       <a href="https://www.spectrum.com/business/offers" class="header-nav-link">Offers</a>
@@ -87,32 +65,24 @@ export default async function decorate(block) {
       <a href="https://www.spectrum.com/business/contact" class="header-nav-link">Contact Us</a>
     `;
   }
+  headerWrapper.appendChild(nav);
 
-  headerTop.appendChild(nav);
+  block.appendChild(headerWrapper);
 
-  // Right side - phone and CTA
-  const headerActions = document.createElement('div');
-  headerActions.className = 'header-actions';
-  headerActions.innerHTML = `
-    <a href="tel:8664414044" class="header-phone">866-441-4044</a>
-    <a href="/check-availability" class="button primary header-cta">Check availability</a>
+  // Serviceability bar (outside header-wrapper for full-width dark bg)
+  const serviceability = document.createElement('div');
+  serviceability.className = 'serviceability';
+  serviceability.innerHTML = `
+    <div class="serviceability-inner">
+      <div class="serviceability-form">
+        <input type="text" placeholder="Street Address" aria-label="Street Address" />
+        <div class="divider"></div>
+        <input type="text" placeholder="Suite/Unit" aria-label="Suite or Unit" />
+        <div class="divider"></div>
+        <input type="text" placeholder="Zip Code" aria-label="Zip Code" />
+        <button class="serviceability-btn">Check availability</button>
+      </div>
+    </div>
   `;
-  headerTop.appendChild(headerActions);
-
-  // Mobile menu button
-  headerTop.appendChild(buildMobileMenuButton());
-
-  headerInner.appendChild(headerTop);
-
-  // Segment tabs (Residential, Business, Enterprise)
-  const segments = document.createElement('div');
-  segments.className = 'header-segments';
-  segments.innerHTML = `
-    <a href="https://www.spectrum.com" class="header-segment">Residential</a>
-    <a href="https://www.spectrum.com/business" class="header-segment active">Business</a>
-    <a href="https://enterprise.spectrum.com" class="header-segment">Enterprise</a>
-  `;
-  headerInner.appendChild(segments);
-
-  block.appendChild(headerInner);
+  block.appendChild(serviceability);
 }

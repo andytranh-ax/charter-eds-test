@@ -1,0 +1,79 @@
+/* Serviceability Bar Styles */
+.serviceability {
+  background: var(--color-dark, #0d1117);
+  padding: var(--space-md, 16px) 0;
+}
+
+.serviceability-inner {
+  max-width: var(--max-width, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--space-lg, 24px);
+}
+
+.serviceability-form {
+  display: flex;
+  align-items: center;
+  background: var(--color-dark-alt, #161b22);
+  border-radius: var(--radius-full, 9999px);
+  padding: var(--space-xs, 4px);
+  gap: 0;
+}
+
+.serviceability-form input {
+  flex: 1;
+  min-width: 120px;
+  padding: var(--space-md, 16px) var(--space-lg, 24px);
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 14px;
+  outline: none;
+}
+
+.serviceability-form input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.serviceability-form .divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.serviceability-btn {
+  background: var(--color-primary, #0051bf);
+  color: white;
+  border: none;
+  padding: var(--space-md, 16px) var(--space-xl, 32px);
+  border-radius: var(--radius-full, 9999px);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.serviceability-btn:hover {
+  background: var(--color-primary-hover, #003d8f);
+}
+
+@media (max-width: 768px) {
+  .serviceability-form {
+    flex-direction: column;
+    border-radius: var(--radius-lg, 16px);
+    padding: var(--space-sm, 8px);
+  }
+
+  .serviceability-form .divider {
+    display: none;
+  }
+
+  .serviceability-form input {
+    width: 100%;
+  }
+
+  .serviceability-btn {
+    width: 100%;
+    margin-top: var(--space-sm, 8px);
+  }
+}
