@@ -192,6 +192,9 @@ export default function decorate(block) {
   // ========================================
   // HERO SECTION
   // ========================================
+  const heroWrapper = document.createElement('div');
+  heroWrapper.className = 'compare-hero-wrapper';
+
   const hero = document.createElement('section');
   hero.className = 'compare-hero';
   hero.innerHTML = `
@@ -205,7 +208,8 @@ export default function decorate(block) {
       <span class="compare-hero-stat-label">Avg. annual savings</span>
     </div>
   `;
-  block.appendChild(hero);
+  heroWrapper.appendChild(hero);
+  block.appendChild(heroWrapper);
 
   if (filterBtn && filterDropdown) {
     filterBtn.addEventListener('click', () => {

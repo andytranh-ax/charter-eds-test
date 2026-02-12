@@ -83,7 +83,48 @@ main:has(.compare) {
 /* ========================================
    HERO SECTION
    ======================================== */
+.compare-hero-wrapper {
+  position: relative;
+  background: var(--color-dark, #0D1117);
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  /* Full width background */
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+}
+
+/* Hero background image */
+.compare-hero-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background: url('https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&q=80') center/cover no-repeat;
+  opacity: 0.4;
+}
+
+/* Gradient overlay */
+.compare-hero-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    var(--color-dark, #0D1117) 40%,
+    rgba(13, 17, 23, 0.8) 60%,
+    rgba(13, 17, 23, 0.6) 100%
+  );
+}
+
 .compare-hero {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -91,6 +132,7 @@ main:has(.compare) {
   padding: var(--space-16, 64px) var(--space-6, 24px);
   max-width: var(--max-width, 1200px);
   margin: 0 auto;
+  width: 100%;
 }
 
 .compare-hero-content {
@@ -105,8 +147,8 @@ main:has(.compare) {
   font-weight: var(--font-bold, 700);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wider, 2px);
-  color: var(--color-primary, #0051BF);
-  background: var(--color-primary-light, #E8F0FE);
+  color: var(--color-accent, #0074E8);
+  background: rgba(0, 116, 232, 0.15);
   padding: var(--space-2, 8px) var(--space-4, 16px);
   border-radius: var(--radius-full, 9999px);
   margin-bottom: var(--space-5, 20px);
@@ -114,11 +156,11 @@ main:has(.compare) {
 
 .compare-hero-title {
   font-family: var(--font-heading);
-  font-size: clamp(36px, 5vw, var(--text-6xl, 56px));
+  font-size: clamp(36px, 5vw, var(--text-5xl, 48px));
   font-weight: var(--font-black, 900);
   line-height: var(--leading-tight, 1.1);
   letter-spacing: var(--tracking-tight, -0.5px);
-  color: var(--color-dark, #0D1117);
+  color: var(--color-white, #FFFFFF);
   margin: 0 0 var(--space-5, 20px);
 }
 
@@ -126,7 +168,7 @@ main:has(.compare) {
   font-family: var(--font-body);
   font-size: var(--text-lg, 18px);
   line-height: var(--leading-relaxed, 1.6);
-  color: var(--color-gray-600, #495057);
+  color: var(--color-gray-300, #DEE2E6);
   margin: 0;
 }
 
@@ -1027,6 +1069,15 @@ main:has(.compare) {
   .compare-filter-dropdown {
     left: 0;
     right: 0;
+  }
+
+  .compare-hero-wrapper {
+    min-height: 400px;
+  }
+
+  .compare-hero-wrapper::before {
+    width: 100%;
+    opacity: 0.2;
   }
 
   .compare-hero {
