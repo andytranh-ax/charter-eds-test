@@ -95,6 +95,9 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
+    // Run experiments before showing page
+    const { runExperiments } = await import('./experimentation.js');
+    runExperiments();
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
