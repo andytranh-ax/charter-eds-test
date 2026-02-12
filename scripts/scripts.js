@@ -19,9 +19,10 @@ const LCP_BLOCKS = ['hero'];
  * @param {Element} header The header element
  */
 async function loadHeader(header) {
-  const headerBlock = buildBlock('header', '');
+  const headerBlock = document.createElement('div');
+  headerBlock.classList.add('header', 'block');
+  headerBlock.dataset.blockName = 'header';
   header.append(headerBlock);
-  decorateBlocks(header);
   await loadBlock(headerBlock);
 }
 
@@ -30,9 +31,10 @@ async function loadHeader(header) {
  * @param {Element} footer The footer element
  */
 async function loadFooter(footer) {
-  const footerBlock = buildBlock('footer', '');
+  const footerBlock = document.createElement('div');
+  footerBlock.classList.add('footer', 'block');
+  footerBlock.dataset.blockName = 'footer';
   footer.append(footerBlock);
-  decorateBlocks(footer);
   await loadBlock(footerBlock);
 }
 
@@ -127,8 +129,10 @@ async function loadLazy(doc) {
   loadFonts();
 
   sampleRUM('lazy');
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  sampleRUM.observe(main.querySelectorAll('picture > img'));
+  if (sampleRUM.observe) {
+    sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
+    sampleRUM.observe(main.querySelectorAll('picture > img'));
+  }
 }
 
 /**
