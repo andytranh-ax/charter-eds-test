@@ -50,8 +50,11 @@ export default function decorate(block) {
           return;
         }
 
-        // Headings = speed tier
-        if (el.tagName.match(/^H[1-6]$/)) {
+        // Headings = speed tier (also detect bold text or "Up to X" pattern)
+        if (el.tagName.match(/^H[1-6]$/) ||
+            (el.querySelector('strong') && text.toLowerCase().includes('mbps')) ||
+            text.match(/^up to \d+/i) ||
+            text.match(/\d+\s*(mbps|gig)/i)) {
           const speed = document.createElement('div');
           speed.className = 'pricing-card-speed';
           speed.textContent = text;
@@ -115,6 +118,25 @@ export default function decorate(block) {
           features.className = 'pricing-card-features';
           // Add checkmark styling via CSS (no need to modify list items)
           card.appendChild(features);
+          return;
+        }
+
+        // Paragraph with bullet characters (•, ●, *) = features list
+        if (el.tagName === 'P' && (text.includes('•') || text.includes('●'))) {
+          // Check if we already have a features list, if not create one
+          let features = card.querySelector('.pricing-card-features');
+          if (!features) {
+            features = document.createElement('ul');
+            features.className = 'pricing-card-features';
+            card.appendChild(features);
+          }
+          // Handle multiple bullets in one paragraph (split by bullet char)
+          const bulletLines = text.split(/[•●]/).filter((line) => line.trim());
+          bulletLines.forEach((bulletText) => {
+            const li = document.createElement('li');
+            li.textContent = bulletText.trim();
+            features.appendChild(li);
+          });
           return;
         }
 

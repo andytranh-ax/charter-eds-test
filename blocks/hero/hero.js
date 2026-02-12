@@ -85,6 +85,24 @@ export default function decorate(block) {
           ul.className = 'hero-features';
         });
 
+        // Convert bullet character paragraphs (•) to proper ul list
+        const bulletParas = [...cloned.querySelectorAll('p')].filter((p) => {
+          const text = p.textContent.trim();
+          return text.startsWith('•') || text.startsWith('●') || text.startsWith('*');
+        });
+        if (bulletParas.length > 0) {
+          const ul = document.createElement('ul');
+          ul.className = 'hero-features';
+          bulletParas.forEach((p) => {
+            const li = document.createElement('li');
+            li.textContent = p.textContent.replace(/^[•●*]\s*/, '');
+            ul.appendChild(li);
+            p.remove();
+          });
+          // Insert the ul where the first bullet was
+          inner.appendChild(ul);
+        }
+
         // Style links as buttons
         cloned.querySelectorAll('a').forEach((a, index) => {
           a.className = index === 0 ? 'button primary' : 'button secondary hero-btn-outline';
