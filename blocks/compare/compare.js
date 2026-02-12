@@ -88,9 +88,8 @@ export default function decorate(block) {
   block.innerHTML = '';
   block.className = 'compare';
 
-  // Service categories for typewriter and filter
+  // Service categories for filter
   const services = ['Internet', 'Phone', 'Mobile', 'TV'];
-  let currentServiceIndex = 0;
 
   // ========================================
   // HERO SECTION
@@ -100,9 +99,7 @@ export default function decorate(block) {
   hero.innerHTML = `
     <div class="compare-hero-content">
       <span class="compare-hero-badge">Price Comparison</span>
-      <h1 class="compare-hero-title">
-        Compare <span class="typewriter-wrapper"><span class="typewriter-text">Internet</span><span class="typewriter-cursor">|</span></span> Prices
-      </h1>
+      <h1 class="compare-hero-title">See How Much You Could Save</h1>
       <p class="compare-hero-subtitle">See how Spectrum Business stacks up against major competitors. Real prices. Real savings. No surprises.</p>
     </div>
     <div class="compare-hero-right">
@@ -130,54 +127,6 @@ export default function decorate(block) {
     </div>
   `;
   block.appendChild(hero);
-
-  // Typewriter effect
-  const typewriterText = hero.querySelector('.typewriter-text');
-  const typewriterCursor = hero.querySelector('.typewriter-cursor');
-  let isDeleting = false;
-  let charIndex = services[0].length;
-  let isPaused = false;
-
-  function typeWriter() {
-    const currentWord = services[currentServiceIndex];
-
-    if (isPaused) {
-      setTimeout(typeWriter, 100);
-      return;
-    }
-
-    if (!isDeleting) {
-      // Typing
-      typewriterText.textContent = currentWord.substring(0, charIndex);
-      charIndex++;
-
-      if (charIndex > currentWord.length) {
-        // Finished typing, pause then start deleting
-        isPaused = true;
-        setTimeout(() => {
-          isPaused = false;
-          isDeleting = true;
-        }, 2000);
-      }
-    } else {
-      // Deleting
-      typewriterText.textContent = currentWord.substring(0, charIndex);
-      charIndex--;
-
-      if (charIndex < 0) {
-        // Finished deleting, move to next word
-        isDeleting = false;
-        currentServiceIndex = (currentServiceIndex + 1) % services.length;
-        charIndex = 0;
-      }
-    }
-
-    const speed = isDeleting ? 50 : 100;
-    setTimeout(typeWriter, speed);
-  }
-
-  // Start typewriter after initial delay
-  setTimeout(typeWriter, 2500);
 
   // Filter dropdown toggle
   const filterBtn = hero.querySelector('.compare-filter-btn');
@@ -209,12 +158,6 @@ export default function decorate(block) {
       // Close dropdown
       filterBtn.setAttribute('aria-expanded', 'false');
       filterDropdown.classList.remove('is-open');
-
-      // Update typewriter to match (optional - sync the animation)
-      currentServiceIndex = services.indexOf(service);
-      charIndex = service.length;
-      isDeleting = false;
-      typewriterText.textContent = service;
     });
   });
 
@@ -277,10 +220,6 @@ export default function decorate(block) {
               <div class="compare-price-header">
                 <div class="compare-provider-logo" data-provider="${provider.logo}">
                   <span>${provider.name}</span>
-                </div>
-                <div class="compare-rating">
-                  ${renderStars(provider.rating)}
-                  <span class="compare-rating-value">${provider.rating}</span>
                 </div>
               </div>
               <div class="compare-price-body">
@@ -482,7 +421,7 @@ export default function decorate(block) {
   block.appendChild(testimonialSection);
 
   // ========================================
-  // CTA SECTION
+  // CTA SECTION (with disclaimer integrated)
   // ========================================
   const ctaSection = document.createElement('section');
   ctaSection.className = 'compare-cta-section';
@@ -499,21 +438,13 @@ export default function decorate(block) {
         </a>
         <a href="/check-availability" class="compare-cta-secondary">Check Availability</a>
       </div>
+      <p class="compare-cta-disclaimer">
+        Pricing based on publicly available rates as of ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.
+        Actual pricing may vary by location. Equipment fees, taxes, and other charges may apply.
+      </p>
     </div>
   `;
   block.appendChild(ctaSection);
-
-  // ========================================
-  // DISCLAIMER
-  // ========================================
-  const disclaimer = document.createElement('div');
-  disclaimer.className = 'compare-disclaimer';
-  disclaimer.innerHTML = `
-    <p>Pricing comparison based on publicly available rates as of ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.
-    Actual pricing may vary by location and promotional offers. Equipment fees, taxes, and other charges may apply.
-    Contact providers directly for current pricing and availability.</p>
-  `;
-  block.appendChild(disclaimer);
 
   // ========================================
   // EVENT LISTENERS
@@ -567,24 +498,6 @@ function animateNumber(element, target) {
   }
 
   requestAnimationFrame(update);
-}
-
-function renderStars(rating) {
-  const fullStars = Math.floor(rating);
-  const hasHalf = rating % 1 >= 0.5;
-  let stars = '';
-
-  for (let i = 0; i < 5; i++) {
-    if (i < fullStars) {
-      stars += '<span class="star full">★</span>';
-    } else if (i === fullStars && hasHalf) {
-      stars += '<span class="star half">★</span>';
-    } else {
-      stars += '<span class="star empty">☆</span>';
-    }
-  }
-
-  return `<div class="stars">${stars}</div>`;
 }
 
 function getFeatureIcon(feature) {

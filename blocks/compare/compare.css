@@ -108,29 +108,6 @@
   gap: var(--space-5, 20px);
 }
 
-/* Typewriter Effect */
-.typewriter-wrapper {
-  display: inline-flex;
-  align-items: center;
-}
-
-.typewriter-text {
-  color: var(--color-primary, #0051BF);
-  position: relative;
-}
-
-.typewriter-cursor {
-  color: var(--color-primary, #0051BF);
-  font-weight: var(--font-normal, 400);
-  animation: blink 1s infinite;
-  margin-left: 2px;
-}
-
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
 /* Filter Dropdown */
 .compare-filter {
   position: relative;
@@ -390,43 +367,6 @@
 
 .compare-price-card.is-spectrum .compare-provider-logo span {
   color: var(--color-primary, #0051BF);
-}
-
-.compare-rating {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2, 8px);
-  margin-top: var(--space-2, 8px);
-}
-
-.stars {
-  display: flex;
-  gap: 1px;
-}
-
-.star {
-  font-size: 14px;
-  line-height: 1;
-}
-
-.star.full {
-  color: #F5A623;
-}
-
-.star.half {
-  color: #F5A623;
-  opacity: 0.6;
-}
-
-.star.empty {
-  color: var(--color-gray-300, #DEE2E6);
-}
-
-.compare-rating-value {
-  font-family: var(--font-body);
-  font-size: var(--text-sm, 13px);
-  font-weight: var(--font-semibold, 600);
-  color: var(--color-gray-600, #495057);
 }
 
 .compare-price-body {
@@ -971,22 +911,16 @@
   border-color: rgba(255, 255, 255, 0.6);
 }
 
-/* ========================================
-   DISCLAIMER
-   ======================================== */
-.compare-disclaimer {
-  padding: var(--space-8, 32px) var(--space-6, 24px);
-  max-width: var(--max-width, 1200px);
-  margin: 0 auto;
-  border-top: 1px solid var(--color-gray-200, #E9ECEF);
-}
-
-.compare-disclaimer p {
-  font-family: var(--font-body);
-  font-size: var(--text-xs, 11px);
+/* Disclaimer inside CTA */
+.compare-cta-disclaimer {
+  font-size: var(--text-xs, 11px) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  margin-top: var(--space-10, 40px) !important;
+  margin-bottom: 0 !important;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
   line-height: var(--leading-relaxed, 1.6);
-  color: var(--color-gray-500, #6C757D);
-  margin: 0;
 }
 
 /* ========================================
