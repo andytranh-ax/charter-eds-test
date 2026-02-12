@@ -7,10 +7,9 @@
   --compare-gradient: linear-gradient(135deg, var(--color-primary, #0051BF) 0%, var(--color-accent, #0074E8) 100%);
 }
 
-/* Equal spacing above and below page title */
-main .section:first-child:has(.compare-page-header) {
-  padding-top: var(--space-6, 24px);
-  padding-bottom: var(--space-6, 24px);
+/* Reduce space above page title - matches space below */
+.compare-page-header {
+  margin-top: calc(-1 * var(--space-8, 32px));
 }
 
 /* Remove bottom gap before footer */
