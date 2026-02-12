@@ -207,7 +207,7 @@ main .section:has(.compare) {
 
 .compare-bubble {
   position: absolute;
-  top: 100%;
+  top: 0;
   animation: bubble-float 4s ease-out forwards;
 }
 

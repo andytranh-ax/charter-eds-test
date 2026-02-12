@@ -249,9 +249,9 @@ export default function decorate(block) {
     const bubble = document.createElement('div');
     bubble.className = 'compare-bubble';
 
-    // Random position along the width
-    const leftPos = 10 + Math.random() * 80;
-    bubble.style.left = `${leftPos}%`;
+    // Random position along the width (15% to 85%)
+    const leftPos = 15 + Math.random() * 70;
+    bubble.style.cssText = `left: ${leftPos}%;`;
 
     // Random savings amount
     const amount = savingsAmounts[Math.floor(Math.random() * savingsAmounts.length)];
@@ -260,9 +260,7 @@ export default function decorate(block) {
     bubblesContainer.appendChild(bubble);
 
     // Remove after animation completes
-    bubble.addEventListener('animationend', () => {
-      bubble.remove();
-    });
+    setTimeout(() => bubble.remove(), 4500);
   }
 
   // Spawn bubbles periodically - every 5 seconds for subtlety
