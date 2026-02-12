@@ -62,6 +62,7 @@ export default async function decorate(block) {
       <a href="https://www.spectrum.com/business/phone" class="header-nav-link">Phone</a>
       <a href="https://www.spectrum.com/business/mobile" class="header-nav-link">Mobile</a>
       <a href="https://www.spectrum.com/business/tv" class="header-nav-link">TV</a>
+      <a href="/compare" class="header-nav-link">Compare</a>
       <a href="https://www.spectrum.com/business/contact" class="header-nav-link">Contact Us</a>
     `;
   }

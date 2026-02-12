@@ -1,0 +1,366 @@
+/**
+ * Compare Block Styles
+ * Interactive price and feature comparison
+ * Uses design tokens for consistency
+ */
+
+.compare {
+  max-width: var(--max-width, 1200px);
+  margin: 0 auto;
+  padding: var(--space-16, 64px) var(--space-6, 24px);
+}
+
+/* Speed Tier Selector */
+.compare-tier-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4, 16px);
+  margin-bottom: var(--space-10, 40px);
+  flex-wrap: wrap;
+}
+
+.compare-tier-label {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-base, 15px);
+  font-weight: var(--font-medium, 500);
+  color: var(--color-gray-600, #495057);
+}
+
+.compare-tier-tabs {
+  display: flex;
+  background: var(--color-gray-100, #F1F3F5);
+  border-radius: var(--radius-full, 9999px);
+  padding: var(--space-1, 4px);
+}
+
+.compare-tier-tab {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-sm, 13px);
+  font-weight: var(--font-semibold, 600);
+  color: var(--color-gray-600, #495057);
+  background: transparent;
+  border: none;
+  padding: var(--space-2, 8px) var(--space-5, 20px);
+  border-radius: var(--radius-full, 9999px);
+  cursor: pointer;
+  transition: all var(--duration-fast, 150ms) var(--ease-default);
+}
+
+.compare-tier-tab:hover {
+  color: var(--color-gray-800, #212529);
+}
+
+.compare-tier-tab.active {
+  background: var(--color-white, #FFFFFF);
+  color: var(--color-primary, #0051BF);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Price Comparison Bars */
+.compare-prices {
+  margin-bottom: var(--space-10, 40px);
+}
+
+.compare-price-row {
+  display: grid;
+  grid-template-columns: 160px 1fr auto;
+  align-items: center;
+  gap: var(--space-4, 16px);
+  padding: var(--space-4, 16px) 0;
+  border-bottom: 1px solid var(--color-gray-200, #E9ECEF);
+}
+
+.compare-price-row:last-child {
+  border-bottom: none;
+}
+
+.compare-price-row.is-spectrum {
+  background: var(--color-primary-light, #E8F0FE);
+  margin: 0 calc(-1 * var(--space-4, 16px));
+  padding: var(--space-4, 16px);
+  border-radius: var(--radius-md, 12px);
+  border-bottom: none;
+}
+
+.compare-provider-name {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-base, 15px);
+  font-weight: var(--font-semibold, 600);
+  color: var(--color-gray-800, #212529);
+}
+
+.compare-price-row.is-spectrum .compare-provider-name {
+  color: var(--color-primary, #0051BF);
+}
+
+.compare-bar-container {
+  height: 40px;
+  background: var(--color-gray-100, #F1F3F5);
+  border-radius: var(--radius-sm, 8px);
+  overflow: hidden;
+}
+
+.compare-price-row.is-spectrum .compare-bar-container {
+  background: rgba(0, 81, 191, 0.15);
+}
+
+.compare-bar {
+  height: 100%;
+  background: var(--color-gray-400, #ADB5BD);
+  border-radius: var(--radius-sm, 8px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: var(--space-3, 12px);
+  transition: width 0.6s var(--ease-bounce);
+}
+
+.compare-price-row.is-spectrum .compare-bar {
+  background: var(--color-primary, #0051BF);
+}
+
+.compare-price {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  font-size: var(--text-lg, 18px);
+  font-weight: var(--font-bold, 700);
+  color: var(--color-white, #FFFFFF);
+  white-space: nowrap;
+}
+
+.compare-price-row:not(.is-spectrum) .compare-price {
+  color: var(--color-gray-800, #212529);
+}
+
+.compare-period {
+  font-size: var(--text-sm, 13px);
+  font-weight: var(--font-medium, 500);
+  opacity: 0.8;
+}
+
+.compare-savings {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-sm, 13px);
+  font-weight: var(--font-semibold, 600);
+  color: var(--color-error, #DC3545);
+  white-space: nowrap;
+}
+
+.compare-best {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-sm, 13px);
+  font-weight: var(--font-bold, 700);
+  color: var(--color-success, #00A76F);
+  white-space: nowrap;
+}
+
+/* Annual Savings Calculator */
+.compare-savings-calc {
+  margin-bottom: var(--space-12, 48px);
+}
+
+.compare-savings-card {
+  background: linear-gradient(135deg, var(--color-primary, #0051BF) 0%, var(--color-accent, #0074E8) 100%);
+  border-radius: var(--radius-lg, 16px);
+  padding: var(--space-10, 40px);
+  text-align: center;
+  color: var(--color-white, #FFFFFF);
+}
+
+.compare-savings-label {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-base, 15px);
+  font-weight: var(--font-medium, 500);
+  opacity: 0.9;
+  margin-bottom: var(--space-4, 16px);
+}
+
+.compare-savings-amount {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-1, 4px);
+  margin-bottom: var(--space-3, 12px);
+}
+
+.compare-savings-dollar {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  font-size: var(--text-3xl, 32px);
+  font-weight: var(--font-bold, 700);
+  line-height: 1;
+  padding-top: var(--space-2, 8px);
+}
+
+.compare-savings-number {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+  font-size: var(--text-6xl, 56px);
+  font-weight: var(--font-black, 900);
+  line-height: var(--leading-none, 1);
+  letter-spacing: var(--tracking-tight, -0.5px);
+}
+
+.compare-savings-subtext {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-sm, 13px);
+  opacity: 0.8;
+}
+
+/* Feature Comparison Matrix */
+.compare-features {
+  background: var(--color-white, #FFFFFF);
+  border: 1px solid var(--color-gray-200, #E9ECEF);
+  border-radius: var(--radius-lg, 16px);
+  overflow: hidden;
+}
+
+.compare-features-header {
+  display: grid;
+  grid-template-columns: 1fr repeat(3, 120px);
+  background: var(--color-gray-50, #F8F9FA);
+  border-bottom: 1px solid var(--color-gray-200, #E9ECEF);
+}
+
+.compare-feature-label {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-sm, 13px);
+  font-weight: var(--font-semibold, 600);
+  color: var(--color-gray-600, #495057);
+  padding: var(--space-4, 16px);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide, 1.5px);
+}
+
+.compare-provider-header {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-sm, 13px);
+  font-weight: var(--font-semibold, 600);
+  color: var(--color-gray-700, #343A40);
+  padding: var(--space-4, 16px);
+  text-align: center;
+  border-left: 1px solid var(--color-gray-200, #E9ECEF);
+}
+
+.compare-provider-header.is-spectrum {
+  background: var(--color-primary, #0051BF);
+  color: var(--color-white, #FFFFFF);
+}
+
+.compare-feature-row {
+  display: grid;
+  grid-template-columns: 1fr repeat(3, 120px);
+  border-bottom: 1px solid var(--color-gray-100, #F1F3F5);
+}
+
+.compare-feature-row:last-child {
+  border-bottom: none;
+}
+
+.compare-feature-name {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-base, 15px);
+  color: var(--color-gray-700, #343A40);
+  padding: var(--space-4, 16px);
+}
+
+.compare-feature-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4, 16px);
+  border-left: 1px solid var(--color-gray-100, #F1F3F5);
+}
+
+.compare-feature-check svg {
+  width: 20px;
+  height: 20px;
+}
+
+.compare-feature-check.is-spectrum {
+  background: var(--color-primary-light, #E8F0FE);
+}
+
+.compare-feature-check.is-spectrum svg {
+  color: var(--color-primary, #0051BF);
+}
+
+.compare-feature-check:not(.is-spectrum) svg {
+  color: var(--color-gray-400, #ADB5BD);
+}
+
+/* Disclaimer */
+.compare-disclaimer {
+  margin-top: var(--space-8, 32px);
+  padding-top: var(--space-6, 24px);
+  border-top: 1px solid var(--color-gray-200, #E9ECEF);
+}
+
+.compare-disclaimer p {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: var(--text-xs, 11px);
+  color: var(--color-gray-500, #6C757D);
+  line-height: var(--leading-relaxed, 1.6);
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .compare {
+    padding: var(--space-10, 40px) var(--space-4, 16px);
+  }
+
+  .compare-tier-selector {
+    flex-direction: column;
+    gap: var(--space-3, 12px);
+  }
+
+  .compare-price-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-2, 8px);
+  }
+
+  .compare-price-row.is-spectrum {
+    margin: var(--space-2, 8px) 0;
+  }
+
+  .compare-bar-container {
+    height: 48px;
+  }
+
+  .compare-savings,
+  .compare-best {
+    text-align: right;
+  }
+
+  .compare-savings-card {
+    padding: var(--space-6, 24px);
+  }
+
+  .compare-savings-number {
+    font-size: var(--text-5xl, 48px);
+  }
+
+  .compare-features-header,
+  .compare-feature-row {
+    grid-template-columns: 1fr repeat(3, 80px);
+  }
+
+  .compare-provider-header,
+  .compare-feature-check {
+    padding: var(--space-3, 12px) var(--space-2, 8px);
+  }
+
+  .compare-feature-name {
+    font-size: var(--text-sm, 13px);
+  }
+}
+
+@media (max-width: 480px) {
+  .compare-features {
+    overflow-x: auto;
+  }
+
+  .compare-features-header,
+  .compare-feature-row {
+    min-width: 500px;
+  }
+}
