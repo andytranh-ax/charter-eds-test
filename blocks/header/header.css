@@ -210,23 +210,95 @@ header {
     gap: var(--space-md, 16px);
   }
 
-  .serviceability-form {
-    flex-direction: column;
-    border-radius: 16px;
-    padding: 8px;
+  /* Mobile: Collapsed serviceability bar */
+  .serviceability {
+    padding: 6px 0;
   }
 
-  .serviceability-form .divider {
+  .serviceability-inner {
+    padding: 0 16px;
+  }
+
+  /* Hide the full form by default on mobile */
+  .serviceability-form {
     display: none;
   }
 
-  .serviceability-form input {
+  /* Show collapsed toggle button on mobile */
+  .serviceability-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--color-white, #fff);
+    border: 1px solid var(--color-gray-200, #e9ecef);
+    border-radius: 9999px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-gray-600, #495057);
+    cursor: pointer;
     width: 100%;
-    text-align: center;
+    max-width: 280px;
+    margin: 0 auto;
   }
 
-  .serviceability-btn {
+  .serviceability-toggle svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--color-primary, #0051bf);
+  }
+
+  /* Expanded state on mobile */
+  .serviceability.is-expanded .serviceability-toggle {
+    display: none;
+  }
+
+  .serviceability.is-expanded .serviceability-form {
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .serviceability.is-expanded .serviceability-form .divider {
+    display: none;
+  }
+
+  .serviceability.is-expanded .serviceability-form input {
     width: 100%;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid var(--color-gray-200, #e9ecef);
+    border-radius: 8px;
+  }
+
+  .serviceability.is-expanded .serviceability-btn {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  /* Close button for expanded state */
+  .serviceability-close {
+    display: none;
+  }
+
+  .serviceability.is-expanded .serviceability-close {
+    display: block;
+    text-align: center;
     margin-top: 8px;
+    font-size: 12px;
+    color: var(--color-gray-500, #6c757d);
+    cursor: pointer;
+  }
+}
+
+/* Desktop: hide mobile-only elements */
+@media (min-width: 901px) {
+  .serviceability-toggle,
+  .serviceability-close {
+    display: none;
   }
 }

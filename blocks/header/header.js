@@ -85,6 +85,13 @@ export default async function decorate(block) {
   serviceability.className = 'serviceability';
   serviceability.innerHTML = `
     <div class="serviceability-inner">
+      <button class="serviceability-toggle">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        Check service availability
+      </button>
       <div class="serviceability-form">
         <input type="text" placeholder="Street Address" aria-label="Street Address" />
         <div class="divider"></div>
@@ -93,7 +100,20 @@ export default async function decorate(block) {
         <input type="text" placeholder="Zip Code" aria-label="Zip Code" />
         <button class="serviceability-btn">Check availability</button>
       </div>
+      <div class="serviceability-close">Cancel</div>
     </div>
   `;
   block.appendChild(serviceability);
+
+  // Mobile toggle functionality
+  const toggle = serviceability.querySelector('.serviceability-toggle');
+  const closeBtn = serviceability.querySelector('.serviceability-close');
+
+  toggle.addEventListener('click', () => {
+    serviceability.classList.add('is-expanded');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    serviceability.classList.remove('is-expanded');
+  });
 }
