@@ -236,12 +236,12 @@ export default function decorate(block) {
   block.appendChild(heroWrapper);
 
   // ========================================
-  // SAVINGS BUBBLES - Float up from hero edge into white space above
+  // SAVINGS BUBBLES - Float above the page title
   // ========================================
   const bubblesContainer = document.createElement('div');
   bubblesContainer.className = 'compare-bubbles';
-  // Insert BEFORE heroWrapper so bubbles appear in the white space above
-  block.insertBefore(bubblesContainer, heroWrapper);
+  // Insert at the very top of the compare block
+  block.insertBefore(bubblesContainer, block.firstChild);
 
   const savingsAmounts = [15, 22, 18, 31, 27, 19, 24, 36, 28, 33, 21, 29, 17, 25, 32];
 
@@ -255,7 +255,7 @@ export default function decorate(block) {
 
     // Random savings amount
     const amount = savingsAmounts[Math.floor(Math.random() * savingsAmounts.length)];
-    bubble.innerHTML = `<span class="bubble-amount">$${amount}</span>`;
+    bubble.innerHTML = `<span class="bubble-amount">$${amount} saved</span>`;
 
     bubblesContainer.appendChild(bubble);
 
