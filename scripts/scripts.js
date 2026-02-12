@@ -15,6 +15,142 @@ import {
   toClassName,
 } from './aem.js';
 
+// Demo password protection
+const DEMO_PASSWORD = 'spectrum2024';
+
+function checkDemoAccess() {
+  if (sessionStorage.getItem('demo-access') === 'granted') return true;
+
+  // Create password overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'demo-gate';
+  overlay.innerHTML = `
+    <div class="demo-gate-card">
+      <div class="demo-gate-logo">Spectrum <span>BUSINESS</span></div>
+      <h2>Demo Preview</h2>
+      <p>Enter password to view this demo</p>
+      <form class="demo-gate-form">
+        <input type="password" placeholder="Enter password" autocomplete="off" />
+        <button type="submit">View Demo</button>
+      </form>
+      <div class="demo-gate-error"></div>
+    </div>
+  `;
+
+  // Add styles
+  const style = document.createElement('style');
+  style.textContent = `
+    #demo-gate {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0D1117 0%, #1a2332 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 24px;
+    }
+    .demo-gate-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 48px 40px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    }
+    .demo-gate-logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: #0D1117;
+      margin-bottom: 32px;
+    }
+    .demo-gate-logo span {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      margin-top: 2px;
+    }
+    .demo-gate-card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0D1117;
+      margin: 0 0 8px 0;
+    }
+    .demo-gate-card p {
+      font-size: 14px;
+      color: #6c757d;
+      margin: 0 0 24px 0;
+    }
+    .demo-gate-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .demo-gate-form input {
+      padding: 14px 16px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 16px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+    .demo-gate-form input:focus {
+      outline: none;
+      border-color: #0051BF;
+    }
+    .demo-gate-form button {
+      background: #0051BF;
+      color: #fff;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .demo-gate-form button:hover {
+      background: #003d8f;
+    }
+    .demo-gate-error {
+      color: #dc3545;
+      font-size: 13px;
+      margin-top: 12px;
+      min-height: 20px;
+    }
+  `;
+
+  document.head.appendChild(style);
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+
+  // Handle form
+  const form = overlay.querySelector('form');
+  const input = overlay.querySelector('input');
+  const error = overlay.querySelector('.demo-gate-error');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (input.value === DEMO_PASSWORD) {
+      sessionStorage.setItem('demo-access', 'granted');
+      overlay.remove();
+      style.remove();
+      document.body.style.overflow = '';
+    } else {
+      error.textContent = 'Incorrect password';
+      input.value = '';
+      input.focus();
+    }
+  });
+
+  input.focus();
+  return false;
+}
+
+checkDemoAccess();
+
 const LCP_BLOCKS = ['hero'];
 
 const AUDIENCES = {
