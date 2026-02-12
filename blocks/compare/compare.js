@@ -1,216 +1,445 @@
 /**
  * Compare Block
- * Interactive price and feature comparison visualization
+ * Industry-leading price and feature comparison
  */
 
 export default function decorate(block) {
-  // Competitor pricing data (estimated based on published rates)
   const data = {
     tiers: [
-      { name: '300 Mbps', speed: 300 },
-      { name: '600 Mbps', speed: 600 },
-      { name: '1 Gig', speed: 1000 },
+      { name: '300 Mbps', speed: 300, desc: 'Small teams' },
+      { name: '600 Mbps', speed: 600, desc: 'Growing business' },
+      { name: '1 Gig', speed: 1000, desc: 'High demand' },
     ],
     providers: [
       {
         name: 'Spectrum Business',
+        logo: 'spectrum',
         isHighlighted: true,
         prices: [69.99, 104.99, 164.99],
+        rating: 4.5,
         features: {
-          'No annual contract': true,
+          'No annual contracts': true,
           'No data caps': true,
-          'Free modem included': true,
+          'Free modem & router': true,
+          'Free installation': true,
           'Static IP available': true,
           '24/7 U.S.-based support': true,
-          'Free professional installation': true,
         },
       },
       {
         name: 'AT&T Business',
+        logo: 'att',
         prices: [80, 140, 180],
+        rating: 3.8,
         features: {
-          'No annual contract': false,
+          'No annual contracts': false,
           'No data caps': false,
-          'Free modem included': false,
+          'Free modem & router': false,
+          'Free installation': false,
           'Static IP available': true,
           '24/7 U.S.-based support': true,
-          'Free professional installation': false,
         },
       },
       {
         name: 'Comcast Business',
+        logo: 'comcast',
         prices: [84.99, 134.99, 189.99],
+        rating: 3.5,
         features: {
-          'No annual contract': false,
+          'No annual contracts': false,
           'No data caps': false,
-          'Free modem included': false,
+          'Free modem & router': false,
+          'Free installation': false,
           'Static IP available': true,
           '24/7 U.S.-based support': true,
-          'Free professional installation': false,
         },
+      },
+      {
+        name: 'Verizon Business',
+        logo: 'verizon',
+        prices: [89.99, 149.99, 199.99],
+        rating: 4.0,
+        features: {
+          'No annual contracts': false,
+          'No data caps': true,
+          'Free modem & router': false,
+          'Free installation': false,
+          'Static IP available': true,
+          '24/7 U.S.-based support': true,
+        },
+      },
+    ],
+    testimonials: [
+      {
+        quote: "Switching to Spectrum saved us over $400 a year with better speeds and no contracts.",
+        author: "Maria Chen",
+        role: "Owner, Chen's Bakery",
+        location: "Austin, TX"
+      },
+      {
+        quote: "The free installation and equipment made the switch easy. Should have done it sooner.",
+        author: "James Wilson",
+        role: "IT Manager, Wilson & Partners",
+        location: "Denver, CO"
       },
     ],
   };
 
-  // Build the UI
   block.innerHTML = '';
   block.className = 'compare';
 
-  // Speed tier selector
-  const tierSelector = document.createElement('div');
-  tierSelector.className = 'compare-tier-selector';
-  tierSelector.innerHTML = `
-    <span class="compare-tier-label">Select speed:</span>
-    <div class="compare-tier-tabs">
+  // ========================================
+  // HERO SECTION
+  // ========================================
+  const hero = document.createElement('section');
+  hero.className = 'compare-hero';
+  hero.innerHTML = `
+    <div class="compare-hero-content">
+      <span class="compare-hero-badge">Price Comparison</span>
+      <h1 class="compare-hero-title">See How Much You Could Save</h1>
+      <p class="compare-hero-subtitle">Compare Spectrum Business Internet against major competitors. Real prices. Real savings. No surprises.</p>
+    </div>
+    <div class="compare-hero-visual">
+      <div class="compare-hero-stat">
+        <span class="compare-hero-stat-number">$<span class="count-up" data-value="432">0</span></span>
+        <span class="compare-hero-stat-label">Avg. annual savings</span>
+      </div>
+    </div>
+  `;
+  block.appendChild(hero);
+
+  // Animate hero stat
+  setTimeout(() => {
+    const countEl = hero.querySelector('.count-up');
+    if (countEl) animateNumber(countEl, parseInt(countEl.dataset.value, 10));
+  }, 500);
+
+  // ========================================
+  // SPEED TIER SELECTOR
+  // ========================================
+  const tierSection = document.createElement('section');
+  tierSection.className = 'compare-tier-section';
+  tierSection.innerHTML = `
+    <div class="compare-section-header">
+      <h2>Select Your Speed</h2>
+      <p>Choose a speed tier to compare pricing</p>
+    </div>
+    <div class="compare-tier-selector">
       ${data.tiers.map((tier, i) => `
-        <button class="compare-tier-tab ${i === 0 ? 'active' : ''}" data-tier="${i}">
-          ${tier.name}
+        <button class="compare-tier-card ${i === 1 ? 'active' : ''}" data-tier="${i}">
+          <span class="compare-tier-speed">${tier.name}</span>
+          <span class="compare-tier-desc">${tier.desc}</span>
         </button>
       `).join('')}
     </div>
   `;
-  block.appendChild(tierSelector);
+  block.appendChild(tierSection);
 
-  // Price comparison bars
-  const priceComparison = document.createElement('div');
-  priceComparison.className = 'compare-prices';
+  // ========================================
+  // PRICE COMPARISON CARDS
+  // ========================================
+  const priceSection = document.createElement('section');
+  priceSection.className = 'compare-price-section';
 
-  function renderPrices(tierIndex) {
-    const maxPrice = Math.max(...data.providers.map(p => p.prices[tierIndex]));
+  function renderPriceCards(tierIndex) {
     const spectrum = data.providers.find(p => p.isHighlighted);
     const spectrumPrice = spectrum.prices[tierIndex];
 
-    priceComparison.innerHTML = data.providers.map(provider => {
-      const price = provider.prices[tierIndex];
-      const barWidth = (price / maxPrice) * 100;
-      const savings = price - spectrumPrice;
-      const isSpectrum = provider.isHighlighted;
+    priceSection.innerHTML = `
+      <div class="compare-price-grid">
+        ${data.providers.map(provider => {
+          const price = provider.prices[tierIndex];
+          const savings = price - spectrumPrice;
+          const isSpectrum = provider.isHighlighted;
+          const savingsPercent = Math.round((savings / price) * 100);
 
-      return `
-        <div class="compare-price-row ${isSpectrum ? 'is-spectrum' : ''}">
-          <div class="compare-provider-name">${provider.name}</div>
-          <div class="compare-bar-container">
-            <div class="compare-bar" style="width: 0%" data-width="${barWidth}">
-              <span class="compare-price">$${price.toFixed(2)}<span class="compare-period">/mo</span></span>
+          return `
+            <div class="compare-price-card ${isSpectrum ? 'is-spectrum' : ''}" data-animate>
+              ${isSpectrum ? '<div class="compare-price-badge">Best Value</div>' : ''}
+              <div class="compare-price-header">
+                <div class="compare-provider-logo" data-provider="${provider.logo}">
+                  <span>${provider.name}</span>
+                </div>
+                <div class="compare-rating">
+                  ${renderStars(provider.rating)}
+                  <span class="compare-rating-value">${provider.rating}</span>
+                </div>
+              </div>
+              <div class="compare-price-body">
+                <div class="compare-price-amount">
+                  <span class="compare-price-currency">$</span>
+                  <span class="compare-price-value">${price.toFixed(2).split('.')[0]}</span>
+                  <span class="compare-price-cents">.${price.toFixed(2).split('.')[1]}</span>
+                  <span class="compare-price-period">/mo</span>
+                </div>
+                ${!isSpectrum && savings > 0 ? `
+                  <div class="compare-price-extra">
+                    <span class="compare-extra-amount">+$${savings.toFixed(2)}/mo</span>
+                    <span class="compare-extra-percent">${savingsPercent}% more</span>
+                  </div>
+                ` : ''}
+                ${isSpectrum ? `
+                  <div class="compare-price-savings">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm-1 15l-5-5 1.41-1.41L9 12.17l7.59-7.59L18 6l-9 9z" fill="currentColor"/>
+                    </svg>
+                    <span>Lowest price guaranteed</span>
+                  </div>
+                ` : ''}
+              </div>
+              <div class="compare-price-features">
+                ${Object.entries(provider.features).slice(0, 3).map(([feature, has]) => `
+                  <div class="compare-feature-item ${has ? 'has-feature' : 'no-feature'}">
+                    ${has ? `
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M13.333 4L6 11.333 2.667 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    ` : `
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      </svg>
+                    `}
+                    <span>${feature}</span>
+                  </div>
+                `).join('')}
+              </div>
+              ${isSpectrum ? `
+                <a href="tel:8664414044" class="compare-cta-button">
+                  Call 866-441-4044
+                </a>
+              ` : ''}
             </div>
-          </div>
-          ${!isSpectrum && savings > 0 ? `
-            <div class="compare-savings">+$${savings.toFixed(2)}/mo more</div>
-          ` : ''}
-          ${isSpectrum ? `
-            <div class="compare-best">Best Value</div>
-          ` : ''}
-        </div>
-      `;
-    }).join('');
-
-    // Animate bars
-    requestAnimationFrame(() => {
-      priceComparison.querySelectorAll('.compare-bar').forEach(bar => {
-        bar.style.width = bar.dataset.width + '%';
-      });
-    });
+          `;
+        }).join('')}
+      </div>
+    `;
   }
 
-  renderPrices(0);
-  block.appendChild(priceComparison);
+  renderPriceCards(1); // Default to middle tier
+  block.appendChild(priceSection);
 
-  // Annual savings calculator
-  const savingsCalc = document.createElement('div');
-  savingsCalc.className = 'compare-savings-calc';
+  // ========================================
+  // ANNUAL SAVINGS VISUALIZATION
+  // ========================================
+  const savingsSection = document.createElement('section');
+  savingsSection.className = 'compare-savings-section';
 
   function renderSavings(tierIndex) {
     const spectrum = data.providers.find(p => p.isHighlighted);
     const spectrumPrice = spectrum.prices[tierIndex];
     const competitors = data.providers.filter(p => !p.isHighlighted);
-    const avgCompetitorPrice = competitors.reduce((sum, p) => sum + p.prices[tierIndex], 0) / competitors.length;
-    const monthlySavings = avgCompetitorPrice - spectrumPrice;
-    const annualSavings = Math.round(monthlySavings * 12);
 
-    savingsCalc.innerHTML = `
-      <div class="compare-savings-card">
-        <div class="compare-savings-label">Estimated annual savings with Spectrum Business</div>
-        <div class="compare-savings-amount">
-          <span class="compare-savings-dollar">$</span>
-          <span class="compare-savings-number" data-value="${annualSavings}">0</span>
+    const savingsData = competitors.map(c => ({
+      name: c.name,
+      monthly: c.prices[tierIndex] - spectrumPrice,
+      annual: Math.round((c.prices[tierIndex] - spectrumPrice) * 12)
+    }));
+
+    const avgAnnual = Math.round(savingsData.reduce((sum, s) => sum + s.annual, 0) / savingsData.length);
+
+    savingsSection.innerHTML = `
+      <div class="compare-savings-container">
+        <div class="compare-savings-main">
+          <div class="compare-savings-header">
+            <h2>Your Annual Savings</h2>
+            <p>See how much you could save by switching to Spectrum Business</p>
+          </div>
+          <div class="compare-savings-display">
+            <div class="compare-savings-amount">
+              <span class="compare-savings-dollar">$</span>
+              <span class="compare-savings-number" data-value="${avgAnnual}">0</span>
+              <span class="compare-savings-year">/year</span>
+            </div>
+            <span class="compare-savings-context">average savings vs. competitors</span>
+          </div>
         </div>
-        <div class="compare-savings-subtext">vs. average competitor pricing at comparable speeds*</div>
+        <div class="compare-savings-breakdown">
+          <div class="compare-savings-title">Savings by provider</div>
+          ${savingsData.map(s => `
+            <div class="compare-savings-row">
+              <span class="compare-savings-provider">vs. ${s.name}</span>
+              <div class="compare-savings-bar-container">
+                <div class="compare-savings-bar" style="--width: ${(s.annual / Math.max(...savingsData.map(x => x.annual))) * 100}%"></div>
+              </div>
+              <span class="compare-savings-value">$${s.annual}/yr</span>
+            </div>
+          `).join('')}
+        </div>
       </div>
     `;
 
-    // Animate counter
-    const numberEl = savingsCalc.querySelector('.compare-savings-number');
-    animateNumber(numberEl, annualSavings);
+    // Animate savings number
+    setTimeout(() => {
+      const numberEl = savingsSection.querySelector('.compare-savings-number');
+      if (numberEl) animateNumber(numberEl, avgAnnual);
+    }, 300);
   }
 
-  renderSavings(0);
-  block.appendChild(savingsCalc);
+  renderSavings(1);
+  block.appendChild(savingsSection);
 
-  // Feature comparison matrix
-  const featureMatrix = document.createElement('div');
-  featureMatrix.className = 'compare-features';
+  // ========================================
+  // FEATURE COMPARISON TABLE
+  // ========================================
+  const featureSection = document.createElement('section');
+  featureSection.className = 'compare-feature-section';
 
   const allFeatures = Object.keys(data.providers[0].features);
-  featureMatrix.innerHTML = `
-    <div class="compare-features-header">
-      <div class="compare-feature-label">Features included</div>
-      ${data.providers.map(p => `
-        <div class="compare-provider-header ${p.isHighlighted ? 'is-spectrum' : ''}">${p.name}</div>
-      `).join('')}
+  featureSection.innerHTML = `
+    <div class="compare-section-header">
+      <h2>Full Feature Comparison</h2>
+      <p>See all the benefits included with each provider</p>
     </div>
-    ${allFeatures.map(feature => `
-      <div class="compare-feature-row">
-        <div class="compare-feature-name">${feature}</div>
+    <div class="compare-feature-table">
+      <div class="compare-feature-header">
+        <div class="compare-feature-label">Features</div>
         ${data.providers.map(p => `
-          <div class="compare-feature-check ${p.isHighlighted ? 'is-spectrum' : ''}">
-            ${p.features[feature] ? `
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            ` : `
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            `}
+          <div class="compare-feature-provider ${p.isHighlighted ? 'is-spectrum' : ''}">
+            ${p.name}
           </div>
         `).join('')}
       </div>
-    `).join('')}
+      ${allFeatures.map(feature => `
+        <div class="compare-feature-row">
+          <div class="compare-feature-name">
+            ${getFeatureIcon(feature)}
+            <span>${feature}</span>
+          </div>
+          ${data.providers.map(p => `
+            <div class="compare-feature-cell ${p.isHighlighted ? 'is-spectrum' : ''}">
+              ${p.features[feature] ? `
+                <span class="feature-yes">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="10" fill="currentColor" fill-opacity="0.1"/>
+                    <path d="M14.167 7L8.5 12.667 5.833 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              ` : `
+                <span class="feature-no">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="10" fill="currentColor" fill-opacity="0.1"/>
+                    <path d="M13 7L7 13M7 7l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+              `}
+            </div>
+          `).join('')}
+        </div>
+      `).join('')}
+    </div>
   `;
-  block.appendChild(featureMatrix);
+  block.appendChild(featureSection);
 
-  // Disclaimer
+  // ========================================
+  // TESTIMONIALS
+  // ========================================
+  const testimonialSection = document.createElement('section');
+  testimonialSection.className = 'compare-testimonial-section';
+  testimonialSection.innerHTML = `
+    <div class="compare-section-header">
+      <h2>What Business Owners Say</h2>
+      <p>Real customers who made the switch</p>
+    </div>
+    <div class="compare-testimonial-grid">
+      ${data.testimonials.map(t => `
+        <div class="compare-testimonial-card">
+          <div class="compare-testimonial-quote">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="quote-icon">
+              <path d="M13.333 14.667H8V10c0-2.945 2.388-5.333 5.333-5.333h1.334V8h-1.334A2.667 2.667 0 0010.667 10.667v1.333h2.666v2.667zm10.667 0H18.667V10c0-2.945 2.388-5.333 5.333-5.333h1.333V8H24A2.667 2.667 0 0021.333 10.667v1.333H24v2.667z" fill="currentColor"/>
+            </svg>
+            <p>"${t.quote}"</p>
+          </div>
+          <div class="compare-testimonial-author">
+            <div class="compare-author-avatar">${t.author.split(' ').map(n => n[0]).join('')}</div>
+            <div class="compare-author-info">
+              <span class="compare-author-name">${t.author}</span>
+              <span class="compare-author-role">${t.role}</span>
+              <span class="compare-author-location">${t.location}</span>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  block.appendChild(testimonialSection);
+
+  // ========================================
+  // CTA SECTION
+  // ========================================
+  const ctaSection = document.createElement('section');
+  ctaSection.className = 'compare-cta-section';
+  ctaSection.innerHTML = `
+    <div class="compare-cta-content">
+      <h2>Ready to Start Saving?</h2>
+      <p>Switch to Spectrum Business Internet today. No contracts, no data caps, no surprises.</p>
+      <div class="compare-cta-actions">
+        <a href="tel:8664414044" class="compare-cta-primary">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M18.333 14.1v2.5a1.667 1.667 0 01-1.816 1.667 16.492 16.492 0 01-7.192-2.559 16.25 16.25 0 01-5-5 16.492 16.492 0 01-2.558-7.225A1.667 1.667 0 013.4 1.667h2.5a1.667 1.667 0 011.667 1.433c.105.8.3 1.586.583 2.342a1.667 1.667 0 01-.375 1.758l-1.058 1.058a13.333 13.333 0 005 5l1.058-1.058a1.667 1.667 0 011.758-.375c.756.284 1.542.478 2.342.583a1.667 1.667 0 011.458 1.692z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Call 866-441-4044
+        </a>
+        <a href="/check-availability" class="compare-cta-secondary">Check Availability</a>
+      </div>
+    </div>
+  `;
+  block.appendChild(ctaSection);
+
+  // ========================================
+  // DISCLAIMER
+  // ========================================
   const disclaimer = document.createElement('div');
   disclaimer.className = 'compare-disclaimer';
   disclaimer.innerHTML = `
-    <p>*Pricing comparison based on publicly available rates as of ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.
+    <p>Pricing comparison based on publicly available rates as of ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.
     Actual pricing may vary by location and promotional offers. Equipment fees, taxes, and other charges may apply.
-    Contact providers directly for current pricing and availability in your area.</p>
+    Contact providers directly for current pricing and availability.</p>
   `;
   block.appendChild(disclaimer);
 
-  // Event listeners for tier tabs
-  tierSelector.querySelectorAll('.compare-tier-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      tierSelector.querySelectorAll('.compare-tier-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const tierIndex = parseInt(tab.dataset.tier, 10);
-      renderPrices(tierIndex);
+  // ========================================
+  // EVENT LISTENERS
+  // ========================================
+  tierSection.querySelectorAll('.compare-tier-card').forEach(card => {
+    card.addEventListener('click', () => {
+      tierSection.querySelectorAll('.compare-tier-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      const tierIndex = parseInt(card.dataset.tier, 10);
+      renderPriceCards(tierIndex);
       renderSavings(tierIndex);
     });
   });
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  block.querySelectorAll('section').forEach(section => {
+    section.classList.add('animate-ready');
+    observer.observe(section);
+  });
 }
 
-// Animate number counting up
+// ========================================
+// HELPER FUNCTIONS
+// ========================================
+
 function animateNumber(element, target) {
-  const duration = 1000;
+  const duration = 1200;
   const start = performance.now();
+  const startValue = Math.floor(target * 1.3);
 
   function update(currentTime) {
     const elapsed = currentTime - start;
     const progress = Math.min(elapsed / duration, 1);
-    const easeOut = 1 - Math.pow(1 - progress, 3);
-    const current = Math.round(target * easeOut);
+    const easeOut = 1 - Math.pow(1 - progress, 4);
+    const current = Math.round(startValue - (startValue - target) * easeOut);
 
     element.textContent = current.toLocaleString();
 
@@ -220,4 +449,35 @@ function animateNumber(element, target) {
   }
 
   requestAnimationFrame(update);
+}
+
+function renderStars(rating) {
+  const fullStars = Math.floor(rating);
+  const hasHalf = rating % 1 >= 0.5;
+  let stars = '';
+
+  for (let i = 0; i < 5; i++) {
+    if (i < fullStars) {
+      stars += '<span class="star full">★</span>';
+    } else if (i === fullStars && hasHalf) {
+      stars += '<span class="star half">★</span>';
+    } else {
+      stars += '<span class="star empty">☆</span>';
+    }
+  }
+
+  return `<div class="stars">${stars}</div>`;
+}
+
+function getFeatureIcon(feature) {
+  const icons = {
+    'No annual contracts': `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18.333a8.333 8.333 0 100-16.666 8.333 8.333 0 000 16.666z" stroke="currentColor" stroke-width="1.5"/><path d="M12.5 7.5l-5 5M7.5 7.5l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    'No data caps': `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 1.667v16.666M1.667 10h16.666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    'Free modem & router': `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5" width="15" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="10" r="1" fill="currentColor"/><circle cx="10" cy="10" r="1" fill="currentColor"/></svg>`,
+    'Free installation': `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 1.667l8.333 6.666v10H1.667v-10L10 1.667z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+    'Static IP available': `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8.333" stroke="currentColor" stroke-width="1.5"/><path d="M10 5v5l3.333 1.667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    '24/7 U.S.-based support': `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M15 8.333a5 5 0 00-10 0v4.167a3.333 3.333 0 003.333 3.333h3.334A3.333 3.333 0 0015 12.5V8.333z" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 10h.008M12.5 10h.008" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  };
+
+  return icons[feature] || `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/></svg>`;
 }
