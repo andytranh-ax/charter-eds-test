@@ -877,6 +877,66 @@ main .section:has(.compare) {
   padding-right: calc(50vw - 50%);
 }
 
+.compare-testimonial-carousel {
+  max-width: var(--max-width, 1200px);
+  margin: 0 auto;
+  position: relative;
+}
+
+.compare-testimonial-track {
+  position: relative;
+  min-height: 280px;
+}
+
+.compare-testimonial-slide {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6, 24px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+
+.compare-testimonial-slide.is-active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  position: relative;
+}
+
+.compare-testimonial-nav {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2, 8px);
+  margin-top: var(--space-8, 32px);
+}
+
+.compare-testimonial-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-gray-300, #DEE2E6);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.compare-testimonial-dot:hover {
+  background: var(--color-gray-400, #ADB5BD);
+}
+
+.compare-testimonial-dot.is-active {
+  background: var(--color-primary, #0051BF);
+  width: 28px;
+}
+
+/* Keep grid for backward compatibility */
 .compare-testimonial-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1149,6 +1209,14 @@ main .section:has(.compare) {
 
   .compare-testimonial-grid {
     grid-template-columns: 1fr;
+  }
+
+  .compare-testimonial-slide {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-testimonial-track {
+    min-height: 320px;
   }
 
   .compare-cta-actions {
