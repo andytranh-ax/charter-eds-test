@@ -88,6 +88,10 @@ export default function decorate(block) {
   block.innerHTML = '';
   block.className = 'compare';
 
+  // Service categories for typewriter and filter
+  const services = ['Internet', 'Phone', 'Mobile', 'TV'];
+  let currentServiceIndex = 0;
+
   // ========================================
   // HERO SECTION
   // ========================================
@@ -96,10 +100,29 @@ export default function decorate(block) {
   hero.innerHTML = `
     <div class="compare-hero-content">
       <span class="compare-hero-badge">Price Comparison</span>
-      <h1 class="compare-hero-title">See How Much You Could Save</h1>
-      <p class="compare-hero-subtitle">Compare Spectrum Business Internet against major competitors. Real prices. Real savings. No surprises.</p>
+      <h1 class="compare-hero-title">
+        Compare <span class="typewriter-wrapper"><span class="typewriter-text">Internet</span><span class="typewriter-cursor">|</span></span> Prices
+      </h1>
+      <p class="compare-hero-subtitle">See how Spectrum Business stacks up against major competitors. Real prices. Real savings. No surprises.</p>
     </div>
-    <div class="compare-hero-visual">
+    <div class="compare-hero-right">
+      <div class="compare-filter">
+        <button class="compare-filter-btn" aria-expanded="false" aria-haspopup="true">
+          <span class="compare-filter-label">Comparing</span>
+          <span class="compare-filter-value">Internet</span>
+          <svg class="compare-filter-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="compare-filter-dropdown">
+          ${services.map((service, i) => `
+            <button class="compare-filter-option ${i === 0 ? 'is-selected' : ''}" data-service="${service}">
+              ${service}
+              ${i === 0 ? '<span class="compare-filter-current">Current</span>' : ''}
+            </button>
+          `).join('')}
+        </div>
+      </div>
       <div class="compare-hero-stat">
         <span class="compare-hero-stat-number">$<span class="count-up" data-value="432">0</span></span>
         <span class="compare-hero-stat-label">Avg. annual savings</span>
@@ -107,6 +130,101 @@ export default function decorate(block) {
     </div>
   `;
   block.appendChild(hero);
+
+  // Typewriter effect
+  const typewriterText = hero.querySelector('.typewriter-text');
+  const typewriterCursor = hero.querySelector('.typewriter-cursor');
+  let isDeleting = false;
+  let charIndex = services[0].length;
+  let isPaused = false;
+
+  function typeWriter() {
+    const currentWord = services[currentServiceIndex];
+
+    if (isPaused) {
+      setTimeout(typeWriter, 100);
+      return;
+    }
+
+    if (!isDeleting) {
+      // Typing
+      typewriterText.textContent = currentWord.substring(0, charIndex);
+      charIndex++;
+
+      if (charIndex > currentWord.length) {
+        // Finished typing, pause then start deleting
+        isPaused = true;
+        setTimeout(() => {
+          isPaused = false;
+          isDeleting = true;
+        }, 2000);
+      }
+    } else {
+      // Deleting
+      typewriterText.textContent = currentWord.substring(0, charIndex);
+      charIndex--;
+
+      if (charIndex < 0) {
+        // Finished deleting, move to next word
+        isDeleting = false;
+        currentServiceIndex = (currentServiceIndex + 1) % services.length;
+        charIndex = 0;
+      }
+    }
+
+    const speed = isDeleting ? 50 : 100;
+    setTimeout(typeWriter, speed);
+  }
+
+  // Start typewriter after initial delay
+  setTimeout(typeWriter, 2500);
+
+  // Filter dropdown toggle
+  const filterBtn = hero.querySelector('.compare-filter-btn');
+  const filterDropdown = hero.querySelector('.compare-filter-dropdown');
+  const filterValue = hero.querySelector('.compare-filter-value');
+
+  filterBtn.addEventListener('click', () => {
+    const isOpen = filterBtn.getAttribute('aria-expanded') === 'true';
+    filterBtn.setAttribute('aria-expanded', !isOpen);
+    filterDropdown.classList.toggle('is-open', !isOpen);
+  });
+
+  // Filter option selection
+  filterDropdown.querySelectorAll('.compare-filter-option').forEach(option => {
+    option.addEventListener('click', () => {
+      const service = option.dataset.service;
+
+      // Update selected state
+      filterDropdown.querySelectorAll('.compare-filter-option').forEach(opt => {
+        opt.classList.remove('is-selected');
+        opt.querySelector('.compare-filter-current')?.remove();
+      });
+      option.classList.add('is-selected');
+      option.insertAdjacentHTML('beforeend', '<span class="compare-filter-current">Current</span>');
+
+      // Update button text
+      filterValue.textContent = service;
+
+      // Close dropdown
+      filterBtn.setAttribute('aria-expanded', 'false');
+      filterDropdown.classList.remove('is-open');
+
+      // Update typewriter to match (optional - sync the animation)
+      currentServiceIndex = services.indexOf(service);
+      charIndex = service.length;
+      isDeleting = false;
+      typewriterText.textContent = service;
+    });
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!filterBtn.contains(e.target) && !filterDropdown.contains(e.target)) {
+      filterBtn.setAttribute('aria-expanded', 'false');
+      filterDropdown.classList.remove('is-open');
+    }
+  });
 
   // Animate hero stat
   setTimeout(() => {
