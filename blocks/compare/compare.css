@@ -42,15 +42,16 @@ main:has(.compare) {
 
 /* Typewriter Effect - fixed width prevents layout shift */
 .typewriter-wrapper {
-  display: inline-flex;
-  align-items: center;
-  /* Width for longest word "Internet" */
-  min-width: 8ch;
+  display: inline-block;
+  position: relative;
+  /* Fixed width for "Internet" (longest word) - prevents layout shift */
+  width: 4.5em;
+  text-align: left;
+  vertical-align: baseline;
 }
 
 .typewriter-text {
   color: var(--color-primary, #0051BF);
-  display: inline-block;
 }
 
 .typewriter-cursor {
