@@ -1,45 +1,73 @@
 /*
  * COLUMNS BLOCK
- * =============
- * FILE: blocks/columns/columns.js
- *
- * HOW TO ADD: Create blocks/columns/columns.js in your repo
- *
- * WHAT THIS BLOCK EXPECTS IN GOOGLE DOCS:
- * Create a table with 2 columns. First row says "columns".
- * - Left column: An image
- * - Right column: Eyebrow (ALL CAPS), heading (bold), paragraph, link (button)
- *
- * NOTE: The default EDS boilerplate already has a "columns" block.
- * You can either replace it or rename this to "columns-feature".
+ * Collects content into 2 columns: images on left, text on right
  */
 export default function decorate(block) {
   const rows = [...block.children];
 
+  // Collect all content into two columns
+  const leftCol = document.createElement('div');
+  leftCol.className = 'columns-image';
+
+  const rightCol = document.createElement('div');
+  rightCol.className = 'columns-text';
+
   rows.forEach((row) => {
     const cells = [...row.children];
-
     cells.forEach((cell, index) => {
-      // Image cell
-      if (cell.querySelector('picture') || cell.querySelector('img')) {
-        cell.className = 'columns-image';
-      } else {
-        // Text cell
-        cell.className = 'columns-text';
+      const picture = cell.querySelector('picture');
+      const text = cell.textContent.trim();
 
-        // Style ALL CAPS as eyebrow
-        cell.querySelectorAll('p').forEach((p) => {
-          const text = p.textContent.trim();
-          if (text === text.toUpperCase() && text.length > 3 && !p.querySelector('a')) {
-            p.className = 'columns-eyebrow';
-          }
-        });
+      if (picture) {
+        // Image goes to left column
+        const imgWrapper = document.createElement('div');
+        imgWrapper.className = 'columns-image-wrapper';
+        imgWrapper.appendChild(picture.cloneNode(true));
+        leftCol.appendChild(imgWrapper);
+      } else if (text) {
+        // Check for links (CTA)
+        const link = cell.querySelector('a');
+        if (link) {
+          const btn = document.createElement('a');
+          btn.href = link.href;
+          btn.className = 'button primary';
+          btn.textContent = link.textContent;
+          rightCol.appendChild(btn);
+          return;
+        }
 
-        // Style links as buttons
-        cell.querySelectorAll('a').forEach((a) => {
-          a.className = 'button primary';
-        });
+        // ALL CAPS = eyebrow
+        if (text === text.toUpperCase() && text.length > 3) {
+          const eyebrow = document.createElement('div');
+          eyebrow.className = 'columns-eyebrow';
+          eyebrow.textContent = text;
+          rightCol.appendChild(eyebrow);
+          return;
+        }
+
+        // Bold/strong = heading
+        if (cell.querySelector('strong') || cell.querySelector('h1, h2, h3')) {
+          const h2 = document.createElement('h2');
+          h2.textContent = text;
+          rightCol.appendChild(h2);
+          return;
+        }
+
+        // Regular text = paragraph
+        const p = document.createElement('p');
+        p.textContent = text;
+        rightCol.appendChild(p);
       }
     });
   });
+
+  // Rebuild block with 2-column layout
+  block.textContent = '';
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'columns-inner';
+  wrapper.appendChild(leftCol);
+  wrapper.appendChild(rightCol);
+
+  block.appendChild(wrapper);
 }
