@@ -235,6 +235,41 @@ export default function decorate(block) {
   heroWrapper.appendChild(hero);
   block.appendChild(heroWrapper);
 
+  // ========================================
+  // SAVINGS BUBBLES - Float up from hero edge
+  // ========================================
+  const bubblesContainer = document.createElement('div');
+  bubblesContainer.className = 'compare-bubbles';
+  heroWrapper.appendChild(bubblesContainer);
+
+  const savingsAmounts = [15, 22, 18, 31, 27, 19, 24, 36, 28, 33, 21, 29, 17, 25, 32];
+
+  function createBubble() {
+    const bubble = document.createElement('div');
+    bubble.className = 'compare-bubble';
+
+    // Random position along the width
+    const leftPos = 10 + Math.random() * 80;
+    bubble.style.left = `${leftPos}%`;
+
+    // Random savings amount
+    const amount = savingsAmounts[Math.floor(Math.random() * savingsAmounts.length)];
+    bubble.innerHTML = `<span class="bubble-amount">$${amount}</span>`;
+
+    bubblesContainer.appendChild(bubble);
+
+    // Remove after animation completes
+    bubble.addEventListener('animationend', () => {
+      bubble.remove();
+    });
+  }
+
+  // Spawn bubbles periodically
+  setInterval(createBubble, 2000);
+  // Initial bubbles staggered
+  setTimeout(createBubble, 500);
+  setTimeout(createBubble, 1200);
+
   if (filterBtn && filterDropdown) {
     filterBtn.addEventListener('click', () => {
       const isOpen = filterBtn.getAttribute('aria-expanded') === 'true';
