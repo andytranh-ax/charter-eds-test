@@ -126,7 +126,11 @@ async function loadLazy(doc) {
   loadFooter(footer);
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  loadCSS(`${window.hlx.codeBasePath}/styles/animations.css`);
   loadFonts();
+
+  // Load animations
+  import('./animations.js');
 
   sampleRUM('lazy');
   if (sampleRUM.observe) {

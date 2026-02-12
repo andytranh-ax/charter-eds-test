@@ -1,0 +1,434 @@
+/*
+ * ANIMATIONS & EFFECTS
+ * ====================
+ * Modern animations for a best-in-class experience
+ */
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   SCROLL-TRIGGERED ANIMATION CLASSES
+   ============================================ */
+
+/* Base state - hidden before animation */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-on-scroll.animate-fade-left {
+  transform: translateX(-40px);
+}
+
+.animate-on-scroll.animate-fade-right {
+  transform: translateX(40px);
+}
+
+.animate-on-scroll.animate-scale {
+  transform: scale(0.92);
+}
+
+/* Animated state - when visible */
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+
+/* Stagger delays for children */
+.stagger-children > *:nth-child(1) { transition-delay: 0s; }
+.stagger-children > *:nth-child(2) { transition-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { transition-delay: 0.2s; }
+.stagger-children > *:nth-child(4) { transition-delay: 0.3s; }
+.stagger-children > *:nth-child(5) { transition-delay: 0.4s; }
+.stagger-children > *:nth-child(6) { transition-delay: 0.5s; }
+
+/* ============================================
+   HERO ANIMATIONS
+   ============================================ */
+
+.hero .hero-eyebrow {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.hero h1,
+.hero .hero-heading {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.hero .hero-features {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+.hero .hero-features li {
+  opacity: 0;
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero .hero-features li:nth-child(1) { animation-delay: 0.35s; }
+.hero .hero-features li:nth-child(2) { animation-delay: 0.45s; }
+.hero .hero-features li:nth-child(3) { animation-delay: 0.55s; }
+
+.hero p {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+.hero .hero-ctas {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+}
+
+.hero .hero-bg img {
+  animation: scaleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+/* ============================================
+   CARD HOVER EFFECTS
+   ============================================ */
+
+/* Pricing cards */
+.pricing-card {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Feature cards */
+.feature-card {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.feature-card:hover .feature-card-image img {
+  transform: scale(1.08);
+}
+
+.feature-card .feature-card-image img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Contact cards */
+.contact-card {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.contact-card:hover .contact-card-icon {
+  transform: scale(1.1);
+  background: var(--color-primary, #0051BF);
+  color: white;
+}
+
+.contact-card-icon {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s ease,
+              color 0.3s ease;
+}
+
+/* ============================================
+   BUTTON EFFECTS
+   ============================================ */
+
+a.button,
+.btn-primary,
+.serviceability-btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s ease;
+}
+
+a.button:hover,
+.btn-primary:hover,
+.serviceability-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 81, 191, 0.3);
+}
+
+a.button:active,
+.btn-primary:active,
+.serviceability-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(0, 81, 191, 0.2);
+}
+
+/* Ripple effect */
+a.button::after,
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+}
+
+a.button:hover::after,
+.btn-primary:hover::after {
+  transform: scale(2);
+  opacity: 1;
+}
+
+/* ============================================
+   SECTION HEADINGS
+   ============================================ */
+
+.default-content-wrapper h2 {
+  opacity: 0;
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.default-content-wrapper p {
+  opacity: 0;
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+/* ============================================
+   FAQ ACCORDION ANIMATIONS
+   ============================================ */
+
+.faq-item {
+  transition: background 0.3s ease;
+}
+
+.faq-item:hover {
+  background: var(--color-gray-50, #F8F9FA);
+}
+
+.faq-answer {
+  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.3s ease;
+}
+
+.faq-item.open .faq-answer {
+  opacity: 1;
+}
+
+.faq-icon {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.3s ease;
+}
+
+.faq-item.open .faq-icon {
+  transform: rotate(45deg);
+  color: var(--color-primary, #0051BF);
+}
+
+/* ============================================
+   SMOOTH SCROLL
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ============================================
+   PAGE LOAD ANIMATION
+   ============================================ */
+
+body {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Header slide down */
+header {
+  animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+/* ============================================
+   GLASSMORPHISM EFFECTS
+   ============================================ */
+
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Header glass effect on scroll */
+header.scrolled {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ============================================
+   IMAGE PARALLAX EFFECT
+   ============================================ */
+
+.parallax-image {
+  transition: transform 0.1s linear;
+  will-change: transform;
+}
+
+/* ============================================
+   LOADING SKELETON
+   ============================================ */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-gray-100, #F1F3F5) 25%,
+    var(--color-gray-50, #F8F9FA) 50%,
+    var(--color-gray-100, #F1F3F5) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* ============================================
+   FOCUS STATES (Accessibility)
+   ============================================ */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-primary, #0051BF);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
