@@ -265,11 +265,10 @@ export default function decorate(block) {
     });
   }
 
-  // Spawn bubbles periodically
-  setInterval(createBubble, 2000);
-  // Initial bubbles staggered
-  setTimeout(createBubble, 500);
-  setTimeout(createBubble, 1200);
+  // Spawn bubbles periodically - every 5 seconds for subtlety
+  setInterval(createBubble, 5000);
+  // One initial bubble after a delay
+  setTimeout(createBubble, 2000);
 
   if (filterBtn && filterDropdown) {
     filterBtn.addEventListener('click', () => {
