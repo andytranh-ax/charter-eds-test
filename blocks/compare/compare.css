@@ -7,6 +7,62 @@
   --compare-gradient: linear-gradient(135deg, var(--color-primary, #0051BF) 0%, var(--color-accent, #0074E8) 100%);
 }
 
+/* Remove section padding around compare block to prevent white gaps */
+.section:has(.compare) {
+  padding: 0;
+  margin: 0;
+}
+
+/* Ensure no gap before footer */
+.compare > section:last-child {
+  margin-bottom: 0;
+}
+
+/* ========================================
+   PAGE HEADER (Title + Filter)
+   ======================================== */
+.compare-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6, 24px);
+  max-width: var(--max-width, 1200px);
+  margin: 0 auto;
+  padding: var(--space-8, 32px) var(--space-6, 24px);
+}
+
+.compare-page-title {
+  font-family: var(--font-heading);
+  font-size: clamp(32px, 4vw, var(--text-5xl, 48px));
+  font-weight: var(--font-black, 900);
+  line-height: var(--leading-tight, 1.1);
+  letter-spacing: var(--tracking-tight, -0.5px);
+  color: var(--color-dark, #0D1117);
+  margin: 0;
+}
+
+/* Typewriter Effect */
+.typewriter-wrapper {
+  display: inline-flex;
+  align-items: center;
+}
+
+.typewriter-text {
+  color: var(--color-primary, #0051BF);
+}
+
+.typewriter-cursor {
+  color: var(--color-primary, #0051BF);
+  font-weight: var(--font-normal, 400);
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
 /* ========================================
    ANIMATIONS
    ======================================== */
@@ -98,14 +154,6 @@
   font-size: var(--text-sm, 13px);
   font-weight: var(--font-medium, 500);
   opacity: 0.9;
-}
-
-/* Hero Right Side */
-.compare-hero-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-5, 20px);
 }
 
 /* Filter Dropdown */
@@ -745,11 +793,20 @@
 }
 
 /* ========================================
-   TESTIMONIALS
+   TESTIMONIALS - Full Width
    ======================================== */
 .compare-testimonial-section {
   padding: var(--space-16, 64px) var(--space-6, 24px);
   background: var(--color-gray-50, #F8F9FA);
+  /* Full width - break out of container */
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  width: 100vw;
+}
+
+.compare-testimonial-section .compare-section-header {
+  max-width: var(--max-width, 1200px);
+  margin: 0 auto var(--space-10, 40px);
 }
 
 .compare-testimonial-grid {
@@ -836,12 +893,18 @@
 }
 
 /* ========================================
-   CTA SECTION
+   CTA SECTION - Full Width, Hugs Footer
    ======================================== */
 .compare-cta-section {
   padding: var(--space-20, 80px) var(--space-6, 24px);
   background: var(--compare-gradient);
   text-align: center;
+  /* Full width - break out of container */
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  width: 100vw;
+  /* No bottom margin - hug footer */
+  margin-bottom: 0;
 }
 
 .compare-cta-content {
@@ -938,19 +1001,16 @@
 }
 
 @media (max-width: 768px) {
-  .compare-hero {
+  /* Page header responsive */
+  .compare-page-header {
     flex-direction: column;
-    text-align: center;
-    padding: var(--space-10, 40px) var(--space-4, 16px);
+    align-items: flex-start;
+    gap: var(--space-4, 16px);
+    padding: var(--space-6, 24px) var(--space-4, 16px);
   }
 
-  .compare-hero-content {
-    max-width: 100%;
-  }
-
-  .compare-hero-right {
-    align-items: center;
-    width: 100%;
+  .compare-page-title {
+    font-size: clamp(28px, 6vw, 36px);
   }
 
   .compare-filter {
@@ -959,12 +1019,22 @@
 
   .compare-filter-btn {
     width: 100%;
-    justify-content: center;
+    justify-content: space-between;
   }
 
   .compare-filter-dropdown {
     left: 0;
     right: 0;
+  }
+
+  .compare-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-10, 40px) var(--space-4, 16px);
+  }
+
+  .compare-hero-content {
+    max-width: 100%;
   }
 
   .compare-tier-selector {
