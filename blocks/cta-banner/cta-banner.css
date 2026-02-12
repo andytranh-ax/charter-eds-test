@@ -1,0 +1,57 @@
+/*
+ * CTA BANNER BLOCK STYLES
+ * =======================
+ * FILE: blocks/cta-banner/cta-banner.css
+ */
+
+.cta-banner {
+  background: var(--color-gray-50, #F8F9FA);
+  border-top: 1px solid var(--color-gray-200, #E9ECEF);
+  border-bottom: 1px solid var(--color-gray-200, #E9ECEF);
+}
+
+.cta-banner .cta-banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 24px;
+  text-align: center;
+}
+
+.cta-banner h2,
+.cta-banner h3 {
+  font-family: var(--font-heading, sans-serif);
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 800;
+  color: var(--color-dark, #0D1117);
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.cta-banner p {
+  font-size: 16px;
+  color: var(--color-gray-500, #6C757D);
+  margin-bottom: 32px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-banner .cta-banner-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-banner .button.secondary {
+  color: var(--color-primary, #0051BF);
+  border: 2px solid var(--color-primary, #0051BF);
+  background: transparent;
+  padding: 14px 32px;
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+.cta-banner .button.secondary:hover {
+  background: var(--color-primary-light, #E8F0FE);
+}

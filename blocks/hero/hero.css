@@ -1,81 +1,173 @@
+/*
+ * HERO BLOCK STYLES
+ * =================
+ * FILE: blocks/hero/hero.css
+ *
+ * HOW TO ADD THIS TO YOUR REPO:
+ * 1. In your GitHub repo, go to blocks/hero/ folder
+ * 2. Click "Add file" > "Create new file"
+ * 3. Type "hero.css" as the filename
+ * 4. Paste this entire file content
+ * 5. Commit the change
+ */
+
+/* Hero container */
 .hero {
   position: relative;
-  min-height: 500px;
-  overflow: hidden;
+  min-height: 560px;
+  background: var(--color-dark, #0D1117);
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
-.hero .hero-background {
+/* Background image */
+.hero .hero-bg {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
+  right: 0;
+  width: 55%;
   height: 100%;
-  z-index: 0;
+  z-index: 1;
 }
 
-.hero .hero-background img {
+.hero .hero-bg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.hero .hero-overlay {
+/* Gradient overlay so text is readable over image */
+.hero .hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    var(--color-dark, #0D1117) 0%,
+    rgba(13,17,23,0.7) 40%,
+    rgba(13,17,23,0.1) 100%
+  );
+  z-index: 2;
+}
+
+/* Content area */
+.hero .hero-content {
   position: relative;
-  z-index: 1;
-  max-width: 600px;
-  padding: 48px;
-  color: white;
+  z-index: 3;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  width: 100%;
 }
 
-/* Charter/Spectrum style - dark background, clean fonts */
-.hero .hero-overlay h1,
-.hero .hero-overlay h2 {
-  font-family: Arial, Helvetica, sans-serif;
+.hero .hero-inner {
+  max-width: 560px;
+}
+
+/* Eyebrow label above headline */
+.hero .hero-eyebrow {
+  font-family: var(--font-heading, sans-serif);
+  font-size: 12px;
   font-weight: 700;
-  font-size: 42px;
-  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--color-accent, #0074E8);
   margin-bottom: 16px;
-  color: white;
 }
 
-.hero .hero-overlay p {
-  font-size: 18px;
-  line-height: 1.5;
+/* Main headline */
+.hero h1,
+.hero h2,
+.hero h3,
+.hero .hero-heading {
+  font-family: var(--font-heading, sans-serif);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 900;
+  line-height: 1.05;
+  color: #FFFFFF;
   margin-bottom: 24px;
-  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: -1.5px;
 }
 
-/* Spectrum-style blue button */
-.hero .hero-overlay a {
-  display: inline-block;
-  background-color: #0051bf;
-  color: white;
-  padding: 12px 32px;
-  border-radius: 24px;
-  text-decoration: none;
+/* Feature bullet list */
+.hero .hero-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+
+.hero .hero-features li {
+  color: rgba(255,255,255,0.85);
+  font-size: 15px;
+  line-height: 1.6;
+  padding: 6px 0 6px 28px;
+  position: relative;
+}
+
+.hero .hero-features li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 13px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent, #0074E8);
+}
+
+/* Regular paragraph text */
+.hero p {
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+
+/* Button container */
+.hero .hero-ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Primary button */
+.hero a.button.primary {
+  background: var(--color-primary, #0051BF);
+  color: #FFFFFF;
+  padding: 14px 32px;
+  border-radius: 9999px;
+  font-size: 15px;
   font-weight: 600;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
 }
 
-.hero .hero-overlay a:hover {
-  background-color: #003d8f;
+.hero a.button.primary:hover {
+  background: var(--color-primary-hover, #003D8F);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,81,191,0.3);
 }
 
-/* Responsive - stack on mobile */
-@media (max-width: 768px) {
+/* Secondary/outline button */
+.hero a.button.hero-btn-outline {
+  background: transparent;
+  color: #FFFFFF;
+  border: 2px solid rgba(255,255,255,0.3);
+  padding: 14px 32px;
+  border-radius: 9999px;
+}
+
+.hero a.button.hero-btn-outline:hover {
+  border-color: #FFFFFF;
+  background: rgba(255,255,255,0.1);
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 900px) {
+  .hero .hero-bg {
+    width: 100%;
+    opacity: 0.3;
+  }
+
   .hero {
-    min-height: 400px;
-  }
-
-  .hero .hero-overlay {
-    padding: 24px;
-  }
-
-  .hero .hero-overlay h1,
-  .hero .hero-overlay h2 {
-    font-size: 28px;
+    min-height: 480px;
   }
 }

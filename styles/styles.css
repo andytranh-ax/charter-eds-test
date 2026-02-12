@@ -1,55 +1,68 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
- * This file is licensed to you under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License. You may obtain a copy
- * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * SPECTRUM BUSINESS - GLOBAL STYLES & DESIGN TOKENS
+ * ================================================
+ * FILE: styles/styles.css
+ * 
+ * HOW TO ADD THIS TO YOUR REPO:
+ * 1. In your GitHub repo, go to the "styles" folder
+ * 2. Click on the existing "styles.css" file
+ * 3. Click the pencil icon to edit
+ * 4. Replace ALL the content with this file
+ * 5. Commit the change
  */
 
+/* ---- DESIGN TOKENS ---- */
 :root {
-  /* Charter/Spectrum colors */
-  --color-brand-blue: #0051bf;
-  --color-brand-blue-hover: #003d8f;
-  --color-brand-dark: #1a1a2e;
-  --color-text-primary: #2c2c2c;
-  --color-text-secondary: #555;
-  --color-text-light: #fff;
-  --color-background: #fff;
-  --color-background-dark: #1a1a2e;
-  --color-border: #e0e0e0;
+  /* Brand Colors */
+  --color-primary: #0051BF;
+  --color-primary-hover: #003D8F;
+  --color-primary-light: #E8F0FE;
+  --color-dark: #0D1117;
+  --color-white: #FFFFFF;
+  --color-gray-50: #F8F9FA;
+  --color-gray-100: #F1F3F5;
+  --color-gray-200: #E9ECEF;
+  --color-gray-300: #DEE2E6;
+  --color-gray-400: #ADB5BD;
+  --color-gray-500: #6C757D;
+  --color-gray-600: #495057;
+  --color-gray-700: #343A40;
+  --color-gray-800: #212529;
+  --color-accent: #0074E8;
+  --color-success: #00A76F;
 
-  /* fonts */
-  --body-font-family: arial, helvetica, sans-serif;
-  --heading-font-family: var(--body-font-family);
-  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
+  /* Typography */
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 18px;
-  --body-font-size-xs: 16px;
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
 
-  /* heading sizes */
-  --heading-font-size-xxl: 48px;
-  --heading-font-size-xl: 40px;
-  --heading-font-size-l: 32px;
-  --heading-font-size-m: 24px;
-  --heading-font-size-s: 20px;
-  --heading-font-size-xs: 18px;
+  /* Borders */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
 
-  /* nav height */
-  --nav-height: 64px;
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-med: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@media (min-width: 900px) {
-  :root {
-    --heading-font-size-xxl: 60px;
-    --heading-font-size-xl: 48px;
-    --heading-font-size-l: 36px;
-    --heading-font-size-m: 30px;
-    --heading-font-size-s: 24px;
-    --heading-font-size-xs: 22px;
-  }
-}
-
+/* ---- GLOBAL RESET ---- */
 *,
 *::before,
 *::after {
@@ -57,178 +70,81 @@
 }
 
 body {
-  font-size: var(--body-font-size-m);
-  margin: 0;
-  font-family: var(--body-font-family);
+  font-family: var(--font-body);
+  font-size: 16px;
   line-height: 1.6;
-  color: var(--color-text-primary);
-  background-color: var(--color-background);
-  display: none;
+  color: var(--color-gray-800);
+  background: var(--color-white);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
-body.appear {
-  display: block;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
 }
 
-header {
-  height: var(--nav-height);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--heading-font-family);
-  font-weight: 700;
-  line-height: 1.15;
-  margin-top: 1em;
-  margin-bottom: 0.5em;
-  scroll-margin: calc(var(--nav-height) + 1em);
-}
-
-h1 { font-size: var(--heading-font-size-xxl); }
-h2 { font-size: var(--heading-font-size-xl); }
-h3 { font-size: var(--heading-font-size-l); }
-h4 { font-size: var(--heading-font-size-m); }
-h5 { font-size: var(--heading-font-size-s); }
-h6 { font-size: var(--heading-font-size-xs); }
-
-p,
-dl,
-ol,
-ul,
-pre,
-blockquote {
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
-
-code,
-pre {
-  font-family: var(--fixed-font-family);
-  font-size: var(--body-font-size-s);
-}
-
-code {
-  padding: 0.125em;
-}
-
-pre {
-  overflow: scroll;
-}
-
-main pre {
-  background-color: var(--color-background-dark);
-  padding: 1em;
-  border-radius: 0.25em;
-  overflow-x: auto;
-  white-space: pre;
-}
-
-/* links */
-a:any-link {
-  color: var(--color-brand-blue);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-  color: var(--color-brand-blue-hover);
-}
-
-/* buttons */
-a.button:any-link,
-button {
-  font-family: var(--body-font-family);
-  display: inline-block;
-  box-sizing: border-box;
-  text-decoration: none;
-  border: 2px solid transparent;
-  padding: 12px 32px;
-  text-align: center;
-  font-style: normal;
-  font-weight: 600;
-  cursor: pointer;
-  color: var(--color-text-light);
-  background-color: var(--color-brand-blue);
-  margin: 16px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  border-radius: 24px;
-  font-size: var(--body-font-size-xs);
-  transition: background-color 0.3s ease;
-}
-
-a.button:hover,
-a.button:focus,
-button:hover,
-button:focus {
-  background-color: var(--color-brand-blue-hover);
-  cursor: pointer;
-}
-
-button:disabled,
-button:disabled:hover {
-  background-color: var(--color-border);
-  cursor: unset;
-}
-
-a.button.secondary,
-button.secondary {
-  background-color: unset;
-  border: 2px solid currentcolor;
-  color: var(--color-text-primary);
-}
-
-main img {
+img {
   max-width: 100%;
-  width: auto;
   height: auto;
 }
 
-.icon {
-  display: inline-block;
-  height: 24px;
-  width: 24px;
+a {
+  color: var(--color-primary);
+  text-decoration: none;
 }
 
-.icon img {
-  height: 100%;
-  width: 100%;
+/* ---- BUTTONS ---- */
+a.button.primary,
+a.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: 14px 32px;
+  border-radius: var(--radius-full);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  transition: all var(--transition-fast);
+  text-decoration: none;
 }
 
-/* sections */
+a.button:hover,
+a.button.primary:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,81,191,0.3);
+}
+
+a.button.secondary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+a.button.secondary:hover {
+  background: var(--color-primary-light);
+}
+
+/* ---- DEFAULT CONTENT SECTION ---- */
 main .section {
-  padding: 64px 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-3xl) var(--space-lg);
 }
 
-@media (min-width: 600px) {
-  main .section {
-    padding: 64px 32px;
-  }
+main .section > .default-content-wrapper > h2 {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  color: var(--color-dark);
+  margin-bottom: var(--space-md);
 }
 
-@media (min-width: 900px) {
-  .section > div {
-    max-width: 1200px;
-    margin: auto;
-  }
-}
-
-/* section metadata */
-main .section.light,
-main .section.highlight {
-  background-color: #f5f5f5;
-}
-
-main .section.dark {
-  background-color: var(--color-background-dark);
-  color: var(--color-text-light);
-}
-
-main .section.dark a:any-link {
-  color: var(--color-text-light);
+main .section > .default-content-wrapper > p {
+  font-size: 17px;
+  color: var(--color-gray-500);
+  max-width: 600px;
 }
