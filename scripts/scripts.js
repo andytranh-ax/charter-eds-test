@@ -10,9 +10,33 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  getMetadata,
+  toCamelCase,
+  toClassName,
 } from './aem.js';
 
 const LCP_BLOCKS = ['hero'];
+
+const AUDIENCES = {
+  mobile: () => window.innerWidth < 600,
+  desktop: () => window.innerWidth >= 600,
+};
+
+/**
+ * Gets all the metadata elements that are in the given scope.
+ * @param {String} scope The scope/prefix for the metadata
+ * @returns an object with the metadata
+ */
+export function getAllMetadata(scope) {
+  return [...document.head.querySelectorAll(`meta[property^="${scope}:"],meta[name^="${scope}-"]`)]
+    .reduce((res, meta) => {
+      const id = toClassName(meta.name
+        ? meta.name.substring(scope.length + 1)
+        : meta.getAttribute('property').split(':')[1]);
+      res[id] = meta.getAttribute('content');
+      return res;
+    }, {});
+}
 
 /**
  * Loads the header block.
@@ -92,18 +116,33 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+
+  // Experimentation plugin — eager phase
+  if (getMetadata('experiment')
+    || Object.keys(getAllMetadata('campaign')).length
+    || Object.keys(getAllMetadata('audience')).length) {
+    // eslint-disable-next-line import/no-relative-packages
+    const { loadEager: runEager } = await import('../plugins/experimentation/src/index.js');
+    await runEager(document, { audiences: AUDIENCES }, {
+      getAllMetadata,
+      getMetadata,
+      loadCSS,
+      loadScript: (src) => import(src),
+      sampleRUM,
+      toCamelCase,
+      toClassName,
+    });
+  }
+
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
-    // Run experiments before showing page
-    const { runExperiments } = await import('./experimentation.js');
-    runExperiments();
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
 
   try {
-    /* if desktop (hierarchical) nav defined defined load defined defined defined */
+    /* if desktop (hierarchical) nav defined */
     if (window.innerWidth >= 900) loadFonts();
   } catch (e) {
     // do nothing
@@ -140,6 +179,23 @@ async function loadLazy(doc) {
   if (sampleRUM.observe) {
     sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
     sampleRUM.observe(main.querySelectorAll('picture > img'));
+  }
+
+  // Experimentation plugin — lazy phase (loads overlay UI)
+  if (getMetadata('experiment')
+    || Object.keys(getAllMetadata('campaign')).length
+    || Object.keys(getAllMetadata('audience')).length) {
+    // eslint-disable-next-line import/no-relative-packages
+    const { loadLazy: runLazy } = await import('../plugins/experimentation/src/index.js');
+    await runLazy(document, { audiences: AUDIENCES }, {
+      getAllMetadata,
+      getMetadata,
+      loadCSS,
+      loadScript: (src) => import(src),
+      sampleRUM,
+      toCamelCase,
+      toClassName,
+    });
   }
 }
 

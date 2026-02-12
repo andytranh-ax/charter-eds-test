@@ -130,6 +130,18 @@
   flex-wrap: wrap;
 }
 
+/* EDS button container - ensure side-by-side */
+.hero .button-container {
+  display: inline-block;
+  margin-right: 12px;
+  margin-bottom: 12px;
+}
+
+.hero .button-container a,
+.hero p a.button {
+  display: inline-block;
+}
+
 /* Primary button */
 .hero a.button.primary {
   background: var(--color-primary, #0051BF);
