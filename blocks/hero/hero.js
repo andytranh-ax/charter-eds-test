@@ -1,147 +1,94 @@
-/*
- * HERO BLOCK
- * ==========
- * Expects a 1-column table where each row is separate content.
+/**
+ * Hero Block
+ * Transforms table content into a styled hero section
  */
 export default function decorate(block) {
-  const rows = [...block.children];
+  // Find the image
+  const picture = block.querySelector('picture');
 
-  // Find image first
-  let image = null;
-  rows.forEach((row) => {
-    const img = row.querySelector('img');
-    if (img) image = img;
-  });
+  // Create hero structure
+  const bg = document.createElement('div');
+  bg.className = 'hero-bg';
 
-  // Build structure
-  block.innerHTML = '';
-
-  // Background image container
-  if (image) {
-    const bgDiv = document.createElement('div');
-    bgDiv.className = 'hero-bg';
-    image.loading = 'eager';
-    bgDiv.appendChild(image.cloneNode(true));
-    block.appendChild(bgDiv);
-  }
-
-  // Content container
   const content = document.createElement('div');
   content.className = 'hero-content';
 
   const inner = document.createElement('div');
   inner.className = 'hero-inner';
 
-  // Collect bullet items
-  const bulletItems = [];
-
-  rows.forEach((row) => {
-    const cell = row.querySelector('div');
+  // Process each row
+  [...block.children].forEach((row) => {
+    const cell = row.children[0];
     if (!cell) return;
 
-    // Skip cells that only contain image
-    if (cell.querySelector('img') && cell.textContent.trim() === '') return;
+    // Check for image
+    const img = cell.querySelector('picture');
+    if (img) {
+      bg.appendChild(img.cloneNode(true));
+      return;
+    }
 
-    const elements = [...cell.children];
-    elements.forEach((el) => {
-      // Skip images
-      if (el.tagName === 'PICTURE' || el.querySelector('picture') || el.querySelector('img')) return;
+    const text = cell.textContent.trim();
+    if (!text) return;
 
-      const text = el.textContent.trim();
-      if (!text && !el.querySelector('a')) return;
+    // Check for links (CTAs)
+    const links = cell.querySelectorAll('a');
+    if (links.length > 0) {
+      const ctas = document.createElement('div');
+      ctas.className = 'hero-ctas';
+      links.forEach((link, i) => {
+        const btn = document.createElement('a');
+        btn.href = link.href;
+        btn.className = i === 0 ? 'button primary' : 'button secondary';
+        btn.textContent = link.textContent;
+        ctas.appendChild(btn);
+      });
+      inner.appendChild(ctas);
+      return;
+    }
 
-      // ALL CAPS = eyebrow
-      if (text === text.toUpperCase() && text.length > 3 && !el.querySelector('a') && !text.startsWith('•')) {
-        const eyebrow = document.createElement('p');
-        eyebrow.className = 'hero-eyebrow';
-        eyebrow.textContent = text;
-        inner.appendChild(eyebrow);
-        return;
+    // ALL CAPS = eyebrow
+    if (text === text.toUpperCase() && text.length > 3 && !text.startsWith('•')) {
+      const eyebrow = document.createElement('p');
+      eyebrow.className = 'hero-eyebrow';
+      eyebrow.textContent = text;
+      inner.appendChild(eyebrow);
+      return;
+    }
+
+    // Bold/strong = headline
+    if (cell.querySelector('strong')) {
+      const h1 = document.createElement('h1');
+      h1.className = 'hero-heading';
+      h1.textContent = text;
+      inner.appendChild(h1);
+      return;
+    }
+
+    // Bullet point
+    if (text.startsWith('•')) {
+      let ul = inner.querySelector('.hero-features');
+      if (!ul) {
+        ul = document.createElement('ul');
+        ul.className = 'hero-features';
+        inner.appendChild(ul);
       }
+      const li = document.createElement('li');
+      li.textContent = text.replace(/^•\s*/, '');
+      ul.appendChild(li);
+      return;
+    }
 
-      // Headings or bold text = main headline
-      if (el.tagName.match(/^H[1-6]$/) || el.querySelector('strong')) {
-        const h1 = document.createElement('h1');
-        h1.className = 'hero-heading';
-        h1.textContent = text;
-        inner.appendChild(h1);
-        return;
-      }
-
-      // Bullet points (collect them)
-      if (text.startsWith('•') || text.startsWith('●') || text.startsWith('*')) {
-        bulletItems.push(text.replace(/^[•●*]\s*/, ''));
-        return;
-      }
-
-      // Links = buttons
-      if (el.querySelector('a')) {
-        // First flush any collected bullets
-        if (bulletItems.length > 0) {
-          const ul = document.createElement('ul');
-          ul.className = 'hero-features';
-          bulletItems.forEach((item) => {
-            const li = document.createElement('li');
-            li.textContent = item;
-            ul.appendChild(li);
-          });
-          inner.appendChild(ul);
-          bulletItems.length = 0;
-        }
-
-        const ctaDiv = inner.querySelector('.hero-ctas') || document.createElement('div');
-        if (!ctaDiv.className) ctaDiv.className = 'hero-ctas';
-
-        const links = el.querySelectorAll('a');
-        links.forEach((link, idx) => {
-          const btn = document.createElement('a');
-          btn.href = link.href;
-          btn.className = ctaDiv.children.length === 0 ? 'button primary' : 'button secondary';
-          btn.textContent = link.textContent;
-          ctaDiv.appendChild(btn);
-        });
-
-        if (!inner.querySelector('.hero-ctas')) {
-          inner.appendChild(ctaDiv);
-        }
-        return;
-      }
-
-      // Regular paragraph (disclaimer text etc)
-      if (text) {
-        // First flush any collected bullets
-        if (bulletItems.length > 0) {
-          const ul = document.createElement('ul');
-          ul.className = 'hero-features';
-          bulletItems.forEach((item) => {
-            const li = document.createElement('li');
-            li.textContent = item;
-            ul.appendChild(li);
-          });
-          inner.appendChild(ul);
-          bulletItems.length = 0;
-        }
-
-        const p = document.createElement('p');
-        p.className = 'hero-text';
-        p.textContent = text;
-        inner.appendChild(p);
-      }
-    });
+    // Regular text = disclaimer
+    const p = document.createElement('p');
+    p.className = 'hero-text';
+    p.textContent = text;
+    inner.appendChild(p);
   });
 
-  // Flush remaining bullets
-  if (bulletItems.length > 0) {
-    const ul = document.createElement('ul');
-    ul.className = 'hero-features';
-    bulletItems.forEach((item) => {
-      const li = document.createElement('li');
-      li.textContent = item;
-      ul.appendChild(li);
-    });
-    inner.appendChild(ul);
-  }
-
+  // Clear and rebuild
+  block.textContent = '';
+  if (bg.children.length > 0) block.appendChild(bg);
   content.appendChild(inner);
   block.appendChild(content);
 }
