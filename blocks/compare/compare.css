@@ -40,14 +40,17 @@ main:has(.compare) {
   margin: 0;
 }
 
-/* Typewriter Effect */
+/* Typewriter Effect - fixed width prevents layout shift */
 .typewriter-wrapper {
   display: inline-flex;
   align-items: center;
+  /* Width for longest word "Internet" */
+  min-width: 8ch;
 }
 
 .typewriter-text {
   color: var(--color-primary, #0051BF);
+  display: inline-block;
 }
 
 .typewriter-cursor {
@@ -137,6 +140,8 @@ main:has(.compare) {
   text-align: center;
   color: var(--color-white);
   box-shadow: 0 20px 40px rgba(0, 81, 191, 0.3);
+  /* Fixed size to prevent layout shift during counter animation */
+  min-width: 200px;
 }
 
 .compare-hero-stat-number {
@@ -146,6 +151,8 @@ main:has(.compare) {
   font-weight: var(--font-black, 900);
   line-height: 1;
   margin-bottom: var(--space-2, 8px);
+  /* Tabular nums for consistent digit widths */
+  font-variant-numeric: tabular-nums;
 }
 
 .compare-hero-stat-label {
