@@ -174,10 +174,17 @@ main .section:has(.compare) {
 }
 
 .compare-hero-service {
-  background: linear-gradient(135deg, #4DA3FF 0%, #0074E8 100%);
+  background: linear-gradient(90deg, #4DA3FF, #0074E8, #4DA3FF, #0074E8);
+  background-size: 300% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: gradient-pulse 4s ease-in-out infinite;
+}
+
+@keyframes gradient-pulse {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .compare-hero-visual {
