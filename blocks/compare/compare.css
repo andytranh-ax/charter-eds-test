@@ -174,7 +174,10 @@ main .section:has(.compare) {
 }
 
 .compare-hero-service {
-  color: var(--color-accent, #0074E8);
+  background: linear-gradient(135deg, #4DA3FF 0%, #0074E8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .compare-hero-visual {
