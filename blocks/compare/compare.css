@@ -7,14 +7,20 @@
   --compare-gradient: linear-gradient(135deg, var(--color-primary, #0051BF) 0%, var(--color-accent, #0074E8) 100%);
 }
 
-/* Remove white space between compare block and footer */
+/* Remove white space around compare page */
 main .section:has(.compare) {
-  padding-bottom: 0;
-  margin-bottom: 0;
+  padding: 0;
+  margin: 0;
 }
 
 main:has(.compare) {
-  padding-bottom: 0;
+  padding: 0;
+}
+
+/* Remove padding from doc title section above compare block */
+main .section:has(+ .section .compare) {
+  padding: var(--space-4, 16px) 0 0 0;
+  margin: 0;
 }
 
 /* ========================================
@@ -27,7 +33,7 @@ main:has(.compare) {
   gap: var(--space-6, 24px);
   max-width: var(--max-width, 1200px);
   margin: 0 auto;
-  padding: var(--space-8, 32px) var(--space-6, 24px);
+  padding: var(--space-4, 16px) var(--space-6, 24px);
 }
 
 .compare-page-title {
