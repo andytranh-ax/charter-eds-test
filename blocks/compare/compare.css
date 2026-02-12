@@ -825,10 +825,28 @@ main .section:has(.compare) {
 
 .compare-savings-bar {
   height: 100%;
-  width: var(--width);
-  background: var(--compare-gradient);
+  width: 0;
+  background: linear-gradient(90deg, #00A76F, #00C896, #00A76F);
+  background-size: 200% 100%;
   border-radius: var(--radius-full, 9999px);
-  transition: width 0.8s var(--ease-bounce);
+  transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Animate bars when section is in view */
+.compare-savings-section.in-view .compare-savings-bar {
+  width: var(--width);
+  animation: bar-pulse 2s ease-in-out 1.2s infinite;
+}
+
+@keyframes bar-pulse {
+  0%, 100% {
+    background-position: 0% 50%;
+    filter: brightness(1);
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: brightness(1.15);
+  }
 }
 
 .compare-savings-value {
